@@ -12,6 +12,7 @@ var Busboy = require('busboy');
 var fs = require('fs');
 var path = require('path');
 var json2xls = require('json2xls');
+const user = require("../routes/user");
 //Here we’re assigning the functions  we want to export to an exports property on module
 module.exports = function (mongoose, utils, config, constants, logger) {
 
@@ -87,6 +88,67 @@ module.exports = function (mongoose, utils, config, constants, logger) {
         }
     }
 
+    userCtrl.updateAdmin = async function (req, res) {
+        try {
+            if (req.user) {
+                if (!req.user.isSuperAdmin) {
+                    return utils.sendCustomError(req, res, "FORBIDDEN", "ACCESS_DENIED")
+                }
+
+                if (!req.body.mailId) {
+                    return utils.sendCustomError(req, res, "BAD_PARAMS", "PARAMS_MISSING")
+                }
+                var query = {};
+                query.mailId = req.body.mailId;
+                let data = await Users.getData(query);
+                if (!data) {
+                    return utils.sendCustomError(req, res, "HTTP_ERR", "DATA_NOT_EXISTS")
+                } else {
+                    var userObj = {};
+
+                    if(req.body.name) {
+                        userObj.name = req.body.name;
+                    }
+
+                    if(req.body.employeeCode) {
+                        userObj.employeeCode = req.body.employeeCode;
+                    }
+                
+                    data = await Users.updateDataById(data._id, userObj);
+                    return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                }
+            }
+        } catch (error) {
+            return utils.sendDBCallbackErrs(req, res, error, null);
+        } 
+    }    
+
+    userCtrl.deleteAdmin = async function (req, res) {
+        try {
+            if (req.user) {
+                if (!req.user.isSuperAdmin) {
+                    return utils.sendCustomError(req, res, "FORBIDDEN", "ACCESS_DENIED")
+                }
+
+                if (!req.body.mailId) {
+                    return utils.sendCustomError(req, res, "BAD_PARAMS", "PARAMS_MISSING")
+                }
+                var query = {};
+                query.mailId = req.body.mailId;
+                let data = await Users.getData(query);
+                if (!data) {
+                    return utils.sendCustomError(req, res, "HTTP_ERR", "DATA_NOT_EXISTS")
+                } else {
+                    data.isAdmin = false;
+                    data = await Users.updateDataById(data._id, { isAdmin : data.isAdmin });
+                    return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                }
+            }
+        } catch (error) {
+            return utils.sendDBCallbackErrs(req, res, error, null);
+        }
+    }
+
     userCtrl.addSuperAdmin = async function (req, res) {
         try {
             if (req.user) {
@@ -121,7 +183,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
         }
     }
 
-    userCtrl.deleteAdmin = async function (req, res) {
+    userCtrl.updateSuperAdmin = async function (req, res) {
         try {
             if (req.user) {
                 if (!req.user.isSuperAdmin) {
@@ -137,16 +199,24 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 if (!data) {
                     return utils.sendCustomError(req, res, "HTTP_ERR", "DATA_NOT_EXISTS")
                 } else {
-                    data.isAdmin = false;
-                    data = await Users.updateDataById(data._id, { isAdmin : data.isAdmin });
+                    var userObj = {};
+
+                    if(req.body.name) {
+                        userObj.name = req.body.name;
+                    }
+
+                    if(req.body.employeeCode) {
+                        userObj.employeeCode = req.body.employeeCode;
+                    }
+                
+                    data = await Users.updateDataById(data._id, userObj);
                     return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
                 }
             }
         } catch (error) {
             return utils.sendDBCallbackErrs(req, res, error, null);
-        }
-    }
-
+        } 
+    }  
 
     userCtrl.deleteSuperAdmin = async function (req, res) {
         try {

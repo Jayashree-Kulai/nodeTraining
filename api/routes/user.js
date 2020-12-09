@@ -10,11 +10,11 @@ const express = require("express");
 module.exports = function (app, mongoose, utils, config, constants, logger, upload) {
     var userCtrl = require("../controllers/user")(mongoose, utils, config, constants, logger);
     var authenticate = require("../auth/bearer").isAuthenticated;
-    
+
     var userRouter = express.Router();
 
     //api to add endUser data
-    userRouter.post("/addEndUsers",upload.single('xlsheet'), userCtrl.createUser);
+    userRouter.post("/addEndUsers", upload.single('xlsheet'), userCtrl.createUser);
 
     userRouter.post("/uploadFile", userCtrl.uploadFile);
 
@@ -33,16 +33,22 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
     userRouter.put("/changePassword", authenticate, userCtrl.changePassword);
 
     // api to to add admin
-    userRouter.post("/addAdmin",authenticate, userCtrl.addAdmin);
+    userRouter.post("/addAdmin", authenticate, userCtrl.addAdmin);
+
+    // api to update an admin
+    userRouter.put("/updateAdmin", authenticate, userCtrl.updateAdmin);
 
     // api to delete an admin
-    userRouter.put("/deleteAdmin",authenticate, userCtrl.deleteAdmin);
-    
+    userRouter.put("/deleteAdmin", authenticate, userCtrl.deleteAdmin);
+
     // api to to add superAdmin
-    userRouter.post("/addSuperAdmin",authenticate, userCtrl.addSuperAdmin);
+    userRouter.post("/addSuperAdmin", authenticate, userCtrl.addSuperAdmin);
+
+    // api to update a superAdmin
+    userRouter.put("/updateSuperAdmin", authenticate, userCtrl.updateSuperAdmin);
 
     // api to delete a superAdmin
-    userRouter.put("/deleteSuperAdmin",authenticate, userCtrl.deleteSuperAdmin);
+    userRouter.put("/deleteSuperAdmin", authenticate, userCtrl.deleteSuperAdmin);
 
 
     // //api to edit user data
@@ -64,7 +70,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
 
     // userRouter.post("/verifyOtp", userCtrl.verifyOtp);
 
-    
-    
+
+
     app.use("/api/v1/users", userRouter);
 };
