@@ -40,7 +40,7 @@ module.exports = {
             .sendMail(message)
             .then(() => {
                 cb();
-                console.log("------------------> Verification code successfully mailed");
+                console.log("------------------> Mail sent successfully<------------------");
             })
             .catch((error) => console.error(error));
 

@@ -25,7 +25,7 @@ module.exports = function (mongoose) {
      * User Schema
      */
     var UserSchema = new Schema({
-        username: {
+        mailId: {
             type: String,
             //required: [true, 'Invalid name'],
             //required: true, 
@@ -52,15 +52,14 @@ module.exports = function (mongoose) {
             type: Date
         },
 
-        userType : {
-            type: String, 
-            enum: ['admin', 'superAdmin', 'endUser'],
-            default: 'endUser'
+        isAdmin : {
+            type: Boolean,
+            default: false 
         },
 
-        admin : {
+        isSuperAdmin : {
             type: Boolean,
-            default: false
+            default: false 
         },
         // xlsheet : {
         //     type: String

@@ -22,9 +22,9 @@ module.exports = {
         NO_RECORDS: 404, //no records found
         BAD_REQUEST: 400, //bad request 
         BAD_PARAMS: 400, //invalid  params
-        PARAM_MISSING: 400, // required params are missing
-
+        PARAMS_MISSING: 400, // required params are missing
     },
+
     text: {
         "SUCCESS": "Success",
         "HTTP_SUCCESS": "Success",
@@ -34,7 +34,7 @@ module.exports = {
         "NO_RECORDS": "No Records Found",
         "BAD_PARAMS": "Invalid params",
         "BAD_REQUEST": "Bad request to server.",
-        "PARAM_MISSING": "Required Parameter missing",
+        "PARAMS_MISSING": "Required Parameter missing",
         "NO_PARAMS": "Parameter Missing !",
         "NOT_AUTHERIZED": "Not Authorized",
         "TOKEN_EXPIRED": "Token Expired!",
@@ -42,8 +42,8 @@ module.exports = {
         "USER_EXISTS": "User already exists",
         "USER_NOT_EXISTS": "User does not exist",
         "DATA_EXISTS": "Data exists",
-        "DATA_NOT_EXISTS":"Data does not exist",
-        
+        "DATA_NOT_EXISTS":"Data does not exist",  
+        "ACCESS_DENIED" : "Access denied "      
     }
 };
 

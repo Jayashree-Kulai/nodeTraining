@@ -26,12 +26,12 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             console.log("dataExcel...........", dataExcel)
 
             dataExcel.forEach(async function (user) {
-                userObj.username = user.EMAIL;
+                userObj.mailId = user.EMAIL;
                 userObj.name = user.NAME;
                 userObj.employeeCode = user.EMPLOYEE_CODE;
-                userObj.password = utils.generateOtp();
+                userObj.password = utils.generatePassword();
 
-                utils.sendMail(userObj.name, userObj.username, userObj.password);
+                utils.sendMail(userObj.name, userObj.mailId, userObj.password);
                 console.log("userObj.password.....", userObj.password)
 
                 userObj.password = utils.encryptPassword(userObj.password);
@@ -48,6 +48,129 @@ module.exports = function (mongoose, utils, config, constants, logger) {
         } catch (error) {
             console.log("____________Err", error);
             return utils.sendDBCallbackErrs(req, res, err, data);
+        }
+    }
+
+    userCtrl.addAdmin = async function (req, res) {
+        try {
+            if (req.user) {
+                if (!req.user.isSuperAdmin) {
+                    return utils.sendCustomError(req, res, "FORBIDDEN", "ACCESS_DENIED")
+                }
+
+                if (!req.body.name || !req.body.employeeCode || !req.body.mailId) {
+                    return utils.sendCustomError(req, res, "BAD_PARAMS", "PARAMS_MISSING")
+                }
+
+                var userObj = {};
+                userObj.name = req.body.name;
+                userObj.employeeCode = req.body.employeeCode;
+                userObj.mailId = req.body.mailId;
+                userObj.isAdmin = true;
+                var defaultPassword = utils.generatePassword();
+                userObj.password = utils.encryptPassword(defaultPassword);
+
+                let data = await Users.addData(userObj);
+                if (!data) {
+                    return utils.sendCustomError(req, res, "HTTP_ERR", "DB_ERR");
+                }
+                console.log("new admin details--->", data);
+                utils.sendMail(userObj.name, userObj.mailId, defaultPassword);
+                console.log("Default password.....", defaultPassword)
+
+                return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+            }
+
+
+        } catch (error) {
+            return utils.sendDBCallbackErrs(req, res, error, null);
+        }
+    }
+
+    userCtrl.addSuperAdmin = async function (req, res) {
+        try {
+            if (req.user) {
+                if (!req.user.isSuperAdmin) {
+                    return utils.sendCustomError(req, res, "FORBIDDEN", "ACCESS_DENIED")
+                }
+
+                if (!req.body.name || !req.body.employeeCode || !req.body.mailId) {
+                    return utils.sendCustomError(req, res, "BAD_PARAMS", "PARAMS_MISSING")
+                }
+
+                var userObj = {};
+                userObj.name = req.body.name;
+                userObj.employeeCode = req.body.employeeCode;
+                userObj.mailId = req.body.mailId;
+                userObj.isSuperAdmin = true;
+                var defaultPassword = utils.generatePassword();
+                userObj.password = utils.encryptPassword(defaultPassword);
+
+                let data = await Users.addData(userObj);
+                if (!data) {
+                    return utils.sendCustomError(req, res, "HTTP_ERR", "DB_ERR");
+                }
+                console.log("New superAdmin details--->", data);
+                utils.sendMail(userObj.name, userObj.mailId, defaultPassword);
+                console.log("Default password.....", defaultPassword)
+
+                return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+            }
+        } catch (error) {
+            return utils.sendDBCallbackErrs(req, res, error, null);
+        }
+    }
+
+    userCtrl.deleteAdmin = async function (req, res) {
+        try {
+            if (req.user) {
+                if (!req.user.isSuperAdmin) {
+                    return utils.sendCustomError(req, res, "FORBIDDEN", "ACCESS_DENIED")
+                }
+
+                if (!req.body.mailId) {
+                    return utils.sendCustomError(req, res, "BAD_PARAMS", "PARAMS_MISSING")
+                }
+                var query = {};
+                query.mailId = req.body.mailId;
+                let data = await Users.getData(query);
+                if (!data) {
+                    return utils.sendCustomError(req, res, "HTTP_ERR", "DATA_NOT_EXISTS")
+                } else {
+                    data.isAdmin = false;
+                    data = await Users.updateDataById(data._id, { isAdmin : data.isAdmin });
+                    return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                }
+            }
+        } catch (error) {
+            return utils.sendDBCallbackErrs(req, res, error, null);
+        }
+    }
+
+
+    userCtrl.deleteSuperAdmin = async function (req, res) {
+        try {
+            if (req.user) {
+                if (!req.user.isSuperAdmin) {
+                    return utils.sendCustomError(req, res, "FORBIDDEN", "ACCESS_DENIED")
+                }
+
+                if (!req.body.mailId) {
+                    return utils.sendCustomError(req, res, "BAD_PARAMS", "PARAMS_MISSING")
+                }
+                var query = {};
+                query.mailId = req.body.mailId;
+                let data = await Users.getData(query);
+                if (!data) {
+                    return utils.sendCustomError(req, res, "HTTP_ERR", "DATA_NOT_EXISTS")
+                } else {
+                    data.isSuperAdmin = false;
+                    data = await Users.updateDataById(data._id, { isSuperAdmin : data.isSuperAdmin });
+                    return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                }
+            }
+        } catch (error) {
+            return utils.sendDBCallbackErrs(req, res, error, null);
         }
     }
 
@@ -103,7 +226,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
 
         queryObj.options = {};
 
-        queryObj.selectFields = 'name username';
+        queryObj.selectFields = 'name mailId';
         //queryObj.populate = { path: 'category', select: 'name' }
         console.log(queryObj)
         let data = await Users.getLists(queryObj);
@@ -112,7 +235,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
         if (data.length > 0) {
             data.forEach(element => {
                 console.log("Current Element------>", element);;
-                xlsData.push({ "Name": element.name, "E-mail": element.username });
+                xlsData.push({ "Name": element.name, "E-mail": element.mailId });
             });
         }
         try {
@@ -143,8 +266,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
     userCtrl.loginUser = async function (req, res) {
         try {
             var query = {};
-            query.username = req.headers.username;
-            query.password = req.headers.password;
+            query.name = req.headers.name;
             query.password = utils.encryptPassword(req.headers.password);
             console.log("Encrpted password---------->", query.password);
             let data = await Users.getData(query);
@@ -167,7 +289,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
         try {
             if (req.user) {
                 var query = {};
-                query.username = req.user.username;
+                query.name = req.user.name;
                 let data = await Users.getData(query);
                 if (!data) {
                     return utils.sendCustomError(req, res, "HTTP_ERR", "DATA_NOT_EXISTS")
@@ -186,17 +308,17 @@ module.exports = function (mongoose, utils, config, constants, logger) {
 
     userCtrl.sendPasswordUpdateLink = async function (req, res) {
         try {
-            if (!req.headers.username) {
+            if (!req.headers.name) {
                 return utils.sendCustomError(req, res, "BAD_PARAMS", "PARAMS_MISSING")
             }
             var query = {};
-            query.username = req.body.username;
+            query.name = req.headers.name;
             let user = await Users.getData(query);
             if (!user) {
                 return utils.sendCustomError(req, res, "HTTP_ERR", "DATA_NOT_EXISTS");
             } else {
                 var passwordUpdateLink = "https://projects.invisionapp.com/share/UVYGK8TWQJZ#/screens/432694629";
-                await utils.sendPasswordUpdationLinkMail(user.name, user.username, passwordUpdateLink);
+                await utils.sendPasswordUpdationLinkMail(user.name, user.mailId, passwordUpdateLink);
                 return utils.sendResponse(req, res, user, "SUCCESS", "SUCCESS");
             }
 
@@ -210,7 +332,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             if (req.user) {
                 console.log("user details->", req.user);
                 var query = {};
-                query.username = req.user.username;
+                query.name = req.user.name;
                 let data = await Users.getData(query);
 
                 if (!data) {
@@ -231,6 +353,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             return utils.sendDBCallbackErrs(req, res, error, null);
         }
     }
+
 
 
 

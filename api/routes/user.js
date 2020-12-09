@@ -13,10 +13,8 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
     
     var userRouter = express.Router();
 
-    //userRouter.get("/getCount",authenticate, userCtrl.getUsersCount);
-
-    //api to add user data
-    userRouter.post("/register",upload.single('xlsheet'), userCtrl.createUser);
+    //api to add endUser data
+    userRouter.post("/addEndUsers",upload.single('xlsheet'), userCtrl.createUser);
 
     userRouter.post("/uploadFile", userCtrl.uploadFile);
 
@@ -34,7 +32,17 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
     // api to to change password
     userRouter.put("/changePassword", authenticate, userCtrl.changePassword);
 
+    // api to to add admin
+    userRouter.post("/addAdmin",authenticate, userCtrl.addAdmin);
+
+    // api to delete an admin
+    userRouter.put("/deleteAdmin",authenticate, userCtrl.deleteAdmin);
     
+    // api to to add superAdmin
+    userRouter.post("/addSuperAdmin",authenticate, userCtrl.addSuperAdmin);
+
+    // api to delete a superAdmin
+    userRouter.put("/deleteSuperAdmin",authenticate, userCtrl.deleteSuperAdmin);
 
 
     // //api to edit user data

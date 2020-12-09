@@ -225,7 +225,7 @@ module.exports = {
         return uuidv4();
     },
 
-    generateOtp: function () {
+    generatePassword: function () {
         var otp = otpGenerator.generate(6, { upperCase: true, specialChars: true, alphabets: true });
         return otp;
     },
