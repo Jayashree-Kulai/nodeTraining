@@ -26,7 +26,7 @@ const bodyParser = require("body-parser");
 
 const mongoose = require("./configs/mongodb"); //mongodb connection
 const constants = require("./configs/constants"); //loading constants
-
+var cron = require('node-cron');
 var passport = require('passport')
 app.use(passport.initialize());
 
@@ -68,21 +68,10 @@ app.listen(config.port, function () {
     console.log("Server Listening to port :", config.port);
 });
 
-// cron.schedule('*/1 * * * *', () => {
-//         console.log('running a task every one minute');
-//       });
-// cron.schedule('* * * * *', () => {
-//     console.log('running a task every minute');
-//   });
+var remindCtrl = require('./controllers/questionnaire.js')(mongoose, utils, config, constants);
+cron.schedule('* * * * *', function () {
+    remindCtrl.remindQuestionnaire();
 
-// # ┌────────────── second (optional)
-// # │ ┌──────────── minute 0-59
-// # │ │ ┌────────── hour 0-23
-// # │ │ │ ┌──────── day of month (1-31)
-// # │ │ │ │ ┌────── month 1-12 (or names)
-// # │ │ │ │ │ ┌──── day of week (0,6 --- 0 is considered sunday, 1 - monday)
-// # │ │ │ │ │ │
-// # │ │ │ │ │ │
-// # * * * * * *
-//exporting app
+});
+
 module.exports = app;

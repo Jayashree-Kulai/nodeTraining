@@ -2,7 +2,7 @@
  * Project          : Invision Policy App
  * Module           : User model File
  * Source filename  : schema.js
- * Description      : This file is to set the schema for the brand collection.
+ * Description      : This file is to set the schema for the users collection.
  * Author           : Jayashree Kulai
  */
 

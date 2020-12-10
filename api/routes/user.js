@@ -1,6 +1,6 @@
 /**
  * Project          : Invision Policy App
- * Module           : User
+ * Module           : User routes file
  * Source filename  : user.js
  * Description      : Api routes for the user.
  * Author           : Jayashree Kulai
@@ -10,7 +10,6 @@ const express = require("express");
 module.exports = function (app, mongoose, utils, config, constants, logger, upload) {
     var userCtrl = require("../controllers/user")(mongoose, utils, config, constants, logger);
     var authenticate = require("../auth/bearer").isAuthenticated;
-
     var userRouter = express.Router();
 
     //api to add endUser data
