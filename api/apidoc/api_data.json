@@ -287,7 +287,7 @@
   },
   {
     "type": "get",
-    "url": "/questionnaires/previewQuestionnaire",
+    "url": "/questionnaires/previewQuestionnaire?questionnaireId=5df7748343hd",
     "title": "Preview Questionnaire",
     "name": "Preview_Questionnaire",
     "group": "Questionnaire",
@@ -308,13 +308,13 @@
     "examples": [
       {
         "title": "Example usage:",
-        "content": "curl -i http://localhost:4200/api/v1/questionnaires/previewQuestionnaire",
+        "content": "curl -i http://localhost:4200/api/v1/questionnaires/previewQuestionnaire?questionnaireId=5df7748343hd",
         "type": "curl"
       }
     ],
     "sampleRequest": [
       {
-        "url": "http://localhost:4200/api/v1/questionnaires/previewQuestionnaire"
+        "url": "http://localhost:4200/api/v1/questionnaires/previewQuestionnaire?questionnaireId=5df7748343hd"
       }
     ],
     "success": {

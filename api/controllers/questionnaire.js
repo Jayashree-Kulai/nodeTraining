@@ -103,7 +103,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
 
     }
 
-    questionnaireCtrl.getQuestionnaire = async function (req, res) {
+    questionnaireCtrl.previewQuestionnaire = async function (req, res) {
         try {
             if (req.user && req.user.isAdmin) {
                 if(!req.body.questionnaireId) {

@@ -97,7 +97,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
 */
 
     //api to preview questionnaire 
-    questionnaireRouter.get("/previewQuestionnaire", authenticate, questionnaireCtrl.getQuestionnaire);
+    questionnaireRouter.post("/previewQuestionnaire", authenticate, questionnaireCtrl.previewQuestionnaire);
          /**
     * @api {get} /questionnaires/previewQuestionnaire Preview Questionnaire
     * @apiName Preview Questionnaire
