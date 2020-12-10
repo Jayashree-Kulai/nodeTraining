@@ -103,35 +103,17 @@ module.exports = function (mongoose, utils, config, constants, logger) {
 
     }
 
-    questionnaireCtrl.getQuestionnaires = async function (req, res) {
+    questionnaireCtrl.getQuestionnaire = async function (req, res) {
         try {
             if (req.user && req.user.isAdmin) {
-                var queryObj = {};
-                queryObj.query = {};
-                if (req.query.adminId) {
-                    queryObj.adminId = req.user._id;
+                if(!req.body.questionnaireId) {
+                    return utils.sendCustomError(req, res, "BAD_PARAMS", "PARAMS_MISSING")
                 }
-                //  console.log(queryObj)
-                queryObj.options = {};
-                if (req.query.limit) {
-                    queryObj.options.limit = JSON.parse(req.query.limit)
-                }
-                if (req.query.skip) {
-                    queryObj.options.skip = JSON.parse(req.query.skip);
-                }
-                if (req.query.sortField && req.query.sortOrder) {
-                    var sortField = req.query.sortField;
-                    var sortOrder = req.query.sortOrder;
-                    queryObj.options.sort = { [`${sortField}`]: JSON.parse(sortOrder) };
-                };
-                if (req.query.searchText) {
-                    queryObj.query.name = { $regex: req.query.searchText, $options: 'i' }
-                };
-                // queryObj.selectFields = 'Title Description Button_Title Button_Text Check_Box_Text  ';
-                queryObj.selectFields = '-mailBody';
-                let data = await Questionnaires.getLists(queryObj);
-                let count = await Questionnaires.getCount(queryObj.query);
-                return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS", count);
+                var query = {};
+                query._id = req.body.questionnaireId;
+                let data = await Questionnaires.getDataById(query._id);
+
+                return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
             } else {
                 return utils.sendAuthError(req, res, "NOT_AUTHERIZED", "NOT_AUTHERIZED")
             }
@@ -139,6 +121,43 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             return utils.sendDBCallbackErrs(req, res, error, null);
         }
     }
+
+    // questionnaireCtrl.getQuestionnaires = async function (req, res) {
+    //     try {
+    //         if (req.user && req.user.isAdmin) {
+    //             var queryObj = {};
+    //             queryObj.query = {};
+    //             if (req.query.adminId) {
+    //                 queryObj.adminId = req.user._id;
+    //             }
+    //             //  console.log(queryObj)
+    //             queryObj.options = {};
+    //             if (req.query.limit) {
+    //                 queryObj.options.limit = JSON.parse(req.query.limit)
+    //             }
+    //             if (req.query.skip) {
+    //                 queryObj.options.skip = JSON.parse(req.query.skip);
+    //             }
+    //             if (req.query.sortField && req.query.sortOrder) {
+    //                 var sortField = req.query.sortField;
+    //                 var sortOrder = req.query.sortOrder;
+    //                 queryObj.options.sort = { [`${sortField}`]: JSON.parse(sortOrder) };
+    //             };
+    //             if (req.query.searchText) {
+    //                 queryObj.query.name = { $regex: req.query.searchText, $options: 'i' }
+    //             };
+    //             // queryObj.selectFields = 'Title Description Button_Title Button_Text Check_Box_Text  ';
+    //             queryObj.selectFields = '-mailBody';
+    //             let data = await Questionnaires.getLists(queryObj);
+    //             let count = await Questionnaires.getCount(queryObj.query);
+    //             return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS", count);
+    //         } else {
+    //             return utils.sendAuthError(req, res, "NOT_AUTHERIZED", "NOT_AUTHERIZED")
+    //         }
+    //     } catch (error) {
+    //         return utils.sendDBCallbackErrs(req, res, error, null);
+    //     }
+    // }
 
     questionnaireCtrl.publishQuestionnaire = async function (req, res) {
         try {
@@ -210,7 +229,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             if (data.length > 0) {
                 data.forEach(element => {
                     console.log("Current Element------>", element);;
-                    console.log("Current Element of user mail------>", element.userId.name);
+                    //console.log("Current Element of user mail------>", element.userId.name);
                     console.log("Current Element of Questionnaire_Id------>", element.questionnaireId);
                     //var questionnaireId = element.questionnaireId;
                     //console.log("Current Element of Questionnaire_Id------>", Questionnaireid);

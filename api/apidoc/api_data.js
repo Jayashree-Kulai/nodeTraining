@@ -1,6 +1,359 @@
 define({ "api": [
   {
     "type": "post",
+    "url": "/questionnaires/addQuestionnaire",
+    "title": "Add Questionnaire",
+    "name": "Add_Questionnaire",
+    "group": "Questionnaire",
+    "description": "<p>API for adding a questionnaire.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Questionnaire title</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Questionnaire description</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "buttonTitle",
+            "description": "<p>Button Title</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "buttonText",
+            "description": "<p>Button Text</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "checkBoxText",
+            "description": "<p>CheckBox Text</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "startDate",
+            "description": "<p>Start Date (Example : &quot;2020-12-09&quot;)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "endDate",
+            "description": "<p>End Date (Example : &quot;2020-12-09&quot;)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "reminder",
+            "description": "<p>Auto reminder</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pptFile",
+            "description": "<p>PPT file with content</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "excelSheet",
+            "description": "<p>Excel sheet containing end user details</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "mailBody",
+            "description": "<p>Mail Body</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/questionnaires/addQuestionnaire",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/questionnaires/addQuestionnaire"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T08:53:04.161Z\"\n    },\n    \"pagination\": {},\n    \"{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T10:07:23.833Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"_id\": \"5fd1f35be392204295efaeaf\",\n        \"adminId\": \"5fd1e1669b7243379e261fc3\",\n        \"title\": \"Leave policy\",\n        \"description\": \"Leave policy details\",\n        \"buttonTitle\": \"Accept\",\n        \"buttonText\": \"I Agree\",\n        \"checkBoxText\": \"I Agree\",\n        \"startDate\": \"2020-12-09T00:00:00.000Z\",\n        \"endDate\": \"2020-12-10T00:00:00.000Z\",\n        \"reminder\": 2,\n        \"pptFile\": \"/home/jayashree/server-policy-app/api/uploads/abc.ppt\",\n        \"excelSheet\": \"endUser.xlsx\",\n        \"mailBody\": \"Hi Please read and accept this policy\",\n        \"createdAt\": \"2020-12-10T10:07:23.825Z\",\n        \"updatedAt\": \"2020-12-10T10:07:23.825Z\",\n        \"__v\": 0\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "    HTTP/1.1 409 Conflict\n  {\n    \"meta\": {\n        \"code\": 409,\n        \"message\": \"Data exists\",\n        \"timestamp\": \"2020-12-10T10:02:45.911Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/questionnaire.js",
+    "groupTitle": "Questionnaire",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/questionnaires/generateReportQuestionnaire",
+    "title": "Generate Report",
+    "name": "Generate_Report",
+    "group": "Questionnaire",
+    "description": "<p>API for generating questionnaire report.</p>",
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/questionnaires/generateReportQuestionnaire",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/questionnaires/generateReportQuestionnaire"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{ \n        No data as response, Mail will be sent to end users.\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized\nUnauthorized",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/questionnaire.js",
+    "groupTitle": "Questionnaire",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/questionnaires/previewQuestionnaire",
+    "title": "Preview Questionnaire",
+    "name": "Preview_Questionnaire",
+    "group": "Questionnaire",
+    "description": "<p>API for preview questionnaire</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "questionnaireId",
+            "description": "<p>Questionnaire Id</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/questionnaires/previewQuestionnaire",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/questionnaires/previewQuestionnaire"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T10:49:49.199Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"_id\": \"5fd1f35be392204295efaeaf\",\n        \"adminId\": \"5fd1e1669b7243379e261fc3\",\n        \"title\": \"Leave policy\",\n        \"description\": \"Leave policy details\",\n        \"buttonTitle\": \"Accept\",\n        \"buttonText\": \"I Agree\",\n        \"checkBoxText\": \"I Agree\",\n        \"startDate\": \"2020-12-09T00:00:00.000Z\",\n        \"endDate\": \"2020-12-10T00:00:00.000Z\",\n        \"reminder\": 2,\n        \"pptFile\": \"/home/jayashree/server-policy-app/api/uploads/abc.ppt\",\n        \"excelSheet\": \"endUser.xlsx\",\n        \"mailBody\": \"Hi Please read and accept this policy\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "    HTTP/1.1 409 Conflict\n  {\n    \"meta\": {\n        \"code\": 400,\n        \"message\": \"Required Parameter missing\",\n        \"timestamp\": \"2020-12-10T10:57:06.922Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/questionnaire.js",
+    "groupTitle": "Questionnaire",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/questionnaires/publishQuestionnaire",
+    "title": "Publish Questionnaire",
+    "name": "Publish_Questionnaire",
+    "group": "Questionnaire",
+    "description": "<p>API for publish a questionnaire.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "questionnaireId",
+            "description": "<p>Questionnaire Id</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/questionnaires/publishQuestionnaire",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/questionnaires/publishQuestionnaire"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{ \n        No data as response, Mail will be sent to end users.\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized\nUnauthorized",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/questionnaire.js",
+    "groupTitle": "Questionnaire",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
     "url": "/users/addAdmin",
     "title": "Add Admin",
     "name": "Add_Admin",
