@@ -260,6 +260,14 @@ module.exports = {
         })
     },
 
+    sendReminderMail: function(name, email, password){
+        var intro = 'Please accept the policy within due date';
+        var subject = 'Remider'
+        services.email.sendMail(name, email, intro, subject, function(err,data){
+            console.log("err",err,"data",data);
+        })
+    },
+
     sendPasswordUpdationLinkMail:function(name, email, updationLink){
         var intro = 'Please use the given link to update your password ' + updationLink;
         var subject = 'Update Your Password';

@@ -288,7 +288,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     console.log("user obj.....", userObj)
 
                     let data = await Users.getData(userObj);
-                    utils.sendMail(data.name, data.mailId, data.password);
+                    utils.sendReminderMail(data.name, data.mailId, data.password);
                 });
         } catch (error) {
             console.log("____________Err", error)

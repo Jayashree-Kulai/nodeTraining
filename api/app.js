@@ -68,7 +68,7 @@ app.listen(config.port, function () {
 });
 
 var remindCtrl = require('./controllers/questionnaire.js')(mongoose, utils, config, constants);
-cron.schedule('1 2 * * *', function () {
+cron.schedule('* * * * *', function () {
     remindCtrl.remindQuestionnaire();
 
 });
