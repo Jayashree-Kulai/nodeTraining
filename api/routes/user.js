@@ -24,7 +24,34 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
     */
 
     //api to add endUser data
-    userRouter.post("/addEndUsers", upload.single('xlsheet'), userCtrl.createUser);
+    userRouter.post("/addEndUsers", authenticate, upload.single('xlsheet'), userCtrl.createUser);
+        /**
+        * @api {post} /users/addEndUsers Upload excel sheet
+        * @apiName Upload excel sheet
+        * @apiGroup User
+        * @apiDescription API for uploading end users excel sheet. User data will be added to 'users' collection and credentials wil be mailed to users. This API can't be used in apidoc, since it has uploading file.
+        * @apiUse Authenticate 
+        * @apiParam {String} xlsheet excelSheet.
+        * @apiExample {curl} Example usage:
+        *     curl -i http://localhost:4200/api/v1/users/addEndUsers
+        * @apiSampleRequest http://localhost:4200/api/v1/users/addEndUsers
+        * @apiSuccessExample Success-Response:
+        *     HTTP/1.1 200 OK
+        *       {
+        * No data as response...  Excel sheet will be uploaded to 'uploads' folder.
+    }
+        *     
+        *
+        * @apiErrorExample Error-Response:
+        *     HTTP/1.1 400 Bad Request
+        *     {
+        "meta": {
+            "code": 400,
+            "message": "User does not exist",
+            "timestamp": "2020-12-10T06:23:37.168Z"
+        }
+    }
+        */
 
     userRouter.post("/uploadFile", userCtrl.uploadFile);
 

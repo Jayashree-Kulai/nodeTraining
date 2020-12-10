@@ -286,8 +286,8 @@ define({ "api": [
     }
   },
   {
-    "type": "get",
-    "url": "/questionnaires/previewQuestionnaire?questionnaireId=5df7748343hd",
+    "type": "post",
+    "url": "/questionnaires/previewQuestionnaire",
     "title": "Preview Questionnaire",
     "name": "Preview_Questionnaire",
     "group": "Questionnaire",
@@ -308,13 +308,13 @@ define({ "api": [
     "examples": [
       {
         "title": "Example usage:",
-        "content": "curl -i http://localhost:4200/api/v1/questionnaires/previewQuestionnaire?questionnaireId=5df7748343hd",
+        "content": "curl -i http://localhost:4200/api/v1/questionnaires/previewQuestionnaire",
         "type": "curl"
       }
     ],
     "sampleRequest": [
       {
-        "url": "http://localhost:4200/api/v1/questionnaires/previewQuestionnaire?questionnaireId=5df7748343hd"
+        "url": "http://localhost:4200/api/v1/questionnaires/previewQuestionnaire"
       }
     ],
     "success": {
@@ -1168,6 +1168,80 @@ define({ "api": [
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 401 Unauthorized\nUnauthorized",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/user.js",
+    "groupTitle": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/users/addEndUsers",
+    "title": "Upload excel sheet",
+    "name": "Upload_excel_sheet",
+    "group": "User",
+    "description": "<p>API for uploading end users excel sheet. User data will be added to 'users' collection and credentials wil be mailed to users. This API can't be used in apidoc, since it has uploading file.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "xlsheet",
+            "description": "<p>excelSheet.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/users/addEndUsers",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/users/addEndUsers"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n      {\nNo data as response...  Excel sheet will be uploaded to 'uploads' folder.\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n    \"meta\": {\n        \"code\": 400,\n        \"message\": \"User does not exist\",\n        \"timestamp\": \"2020-12-10T06:23:37.168Z\"\n    }\n}",
           "type": "json"
         }
       ]
