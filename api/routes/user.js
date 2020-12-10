@@ -12,6 +12,17 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
     var authenticate = require("../auth/bearer").isAuthenticated;
     var userRouter = express.Router();
 
+    /**
+    * @apiDefine Authenticate
+    *
+    * @apiHeader {String} Authorization Bearer token for authorization
+    *
+    * @apiHeaderExample {json} Header-Example:
+    *     {
+    *       "Authorization": "Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8"
+    *     }
+    */
+
     //api to add endUser data
     userRouter.post("/addEndUsers", upload.single('xlsheet'), userCtrl.createUser);
 
@@ -21,15 +32,191 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
 
     //api for user login
     userRouter.post("/login", userCtrl.loginUser);
+    /**
+    * @api {post} /users/login Login
+    * @apiName Login
+    * @apiGroup User
+    * @apiDescription API for user login
+    *
+    * @apiHeader {String} name Name of the user.
+    * @apiHeader {String} password Password of the corresponding user.
+    * @apiHeaderExample {json} Header-Example:
+    *     {
+    *       "name": "Yakshitha",
+    *       "password" : "qwertyy"
+    *     }
+    * @apiExample {curl} Example usage:
+    *     curl -i http://localhost:4200/api/v1/users/login
+    * @apiSampleRequest http://localhost:4200/api/v1/users/login
+    * @apiSuccessExample Success-Response:
+    *     HTTP/1.1 200 OK
+    *       {
+         "meta": {
+         "code": 200,
+         "message": "Success",
+         "timestamp": "2020-12-09T18:47:40.498Z"
+    },
+    "pagination": {},
+    "data": {
+        "isAdmin": false,
+        "isSuperAdmin": true,
+        "_id": "5fd10b90a0c55d11812a548b",
+        "name": "Yakshitha",
+        "employeeCode": "MNG01",
+        "mailId": "anugrahakulai@gmail.com",
+        "token": "15c6aaad-9614-42e3-9c0d-a8ce9ed974e4",
+        "tokenExpiry": "2020-12-09T19:47:40.478Z"
+    }
+}
+    *     
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 400 Bad Request
+    *     {
+    "meta": {
+        "code": 400,
+        "message": "User does not exist",
+        "timestamp": "2020-12-10T06:23:37.168Z"
+    }
+}
+    */
 
     //api for user logout
     userRouter.post("/logout", authenticate, userCtrl.logoutUser);
+    /**
+    * @api {post} /users/logout Logout
+    * @apiName Logout
+    * @apiGroup User
+    * @apiDescription API for user logout
+    *
+    * @apiUse Authenticate
+    * 
+    * @apiExample {curl} Example usage:
+    *     curl -i http://localhost:4200/api/v1/users/logout
+    * @apiSampleRequest http://localhost:4200/api/v1/users/logout
+    * @apiSuccessExample Success-Response:
+    *     HTTP/1.1 200 OK
+    *{
+    "meta": {
+        "code": 200,
+        "message": "Success",
+        "timestamp": "2020-12-10T07:18:22.935Z"
+    },
+    "pagination": {},
+    "data": {
+        "isAdmin": false,
+        "isSuperAdmin": false,
+        "_id": "5fd10ac3e307ae109300ff2a",
+        "IsAdmin": true,
+        "IsSuperAdmin": false,
+        "name": "Yakshitha",
+        "employeeCode": "MNG01",
+        "mailId": "anugrahakulai@gmail.com",
+        "token": null,
+        "tokenExpiry": null
+    }
+}
+    *    
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 401 Unauthorized
+    *     Unauthorized
+*/
 
     // api to used when user forget password
     userRouter.post("/sendPasswordUpdateLink", userCtrl.sendPasswordUpdateLink);
+    /**
+    * @api {post} /users/sendPasswordUpdateLink Send Password Updation Link
+    * @apiName Update Password
+    * @apiGroup User
+    * @apiDescription API for sending password updation link, The mailId linked with the 'name' will get the password updation link. 
+    * @apiHeader {String} name Name of the user.
+    * @apiHeaderExample {json} Header-Example:
+    *     {
+    *       "name": "Anugraha"   
+    *     }
+    * @apiExample {curl} Example usage:
+    *     curl -i http://localhost:4200/api/v1/users/sendPasswordUpdateLink
+    * @apiSampleRequest http://localhost:4200/api/v1/users/sendPasswordUpdateLink
+    * @apiSuccessExample Success-Response:
+    *     HTTP/1.1 200 OK
+    *{
+    "meta": {
+        "code": 200,
+        "message": "Success",
+        "timestamp": "2020-12-10T07:30:51.939Z"
+    },
+    "pagination": {},
+    "data": {
+        "_id": "5fd1cdff8f2afa2f8853f98b",
+        "isAdmin": false,
+        "isSuperAdmin": false,
+        "mailId": "anugrahakulai@gmail.com",
+        "name": "Anugraha",
+        "employeeCode": "MNG001"
+    }
+}
+    *    
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 400 Bad Request
+    * {
+    "meta": {
+        "code": 400,
+        "message": "Required Parameter missing",
+        "timestamp": "2020-12-10T07:34:01.066Z"
+    }
+}
+*/
+
 
     // api to to change password
     userRouter.put("/changePassword", authenticate, userCtrl.changePassword);
+    /**
+    * @api {put} /users/changePassword Change Password
+    * @apiName Change Password
+    * @apiGroup User
+    * @apiDescription API for changing password, after login.
+    * @apiUse Authenticate 
+    * @apiHeader {String} password New password.
+    * @apiHeaderExample {json} Header-Example:
+    *     {
+    *       "password" : "sderty"
+    *     }
+    * @apiExample {curl} Example usage:
+    *     curl -i http://localhost:4200/api/v1/users/changePassword
+    * @apiSampleRequest http://localhost:4200/api/v1/users/changePassword
+    * @apiSuccessExample Success-Response:
+    *     HTTP/1.1 200 OK
+    *{
+    "meta": {
+        "code": 200,
+        "message": "Success",
+        "timestamp": "2020-12-10T07:45:48.118Z"
+    },
+    "pagination": {},
+    "data": {
+        "isAdmin": false,
+        "isSuperAdmin": false,
+        "_id": "5fd1cdff8f2afa2f8853f98b",
+        "mailId": "anugrahakulai@gmail.com",
+        "name": "Anugraha",
+        "employeeCode": "MNG001",
+        "token": "644bc2d8-8df7-4f98-9abe-417223bca558",
+        "tokenExpiry": "2020-12-10T08:44:58.422Z"
+    }
+}
+    *    
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 400 Bad Request
+    * {
+    "meta": {
+        "code": 400,
+        "timestamp": "2020-12-10T08:02:43.345Z"
+    }
+}
+*/   
 
     // api to to add admin
     userRouter.post("/addAdmin", authenticate, userCtrl.addAdmin);
@@ -48,28 +235,6 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
 
     // api to delete a superAdmin
     userRouter.put("/deleteSuperAdmin", authenticate, userCtrl.deleteSuperAdmin);
-
-
-    // //api to edit user data
-    // userRouter.put("/:userId", userCtrl.updateUser);
-
-    // //api to list user data
-    // userRouter.get("/", userCtrl.getUsers);
-
-
-    // //api to get details of user data
-    // userRouter.get("/:userId", userCtrl.getUser);
-
-
-    // //api to delete details of user data
-    // userRouter.delete("/:userId", userCtrl.deleteUser);
-
-    // //api to send OTP
-    // userRouter.post("/sendOtp", userCtrl.sendOtp);
-
-    // userRouter.post("/verifyOtp", userCtrl.verifyOtp);
-
-
 
     app.use("/api/v1/users", userRouter);
 };

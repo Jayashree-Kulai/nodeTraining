@@ -50,12 +50,11 @@ var upload = multer({ storage: storage });
 
 
 // configure app to use bodyParser()
-// this will let us get the data from a POST
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// this will 
-// app.use("/docs", express.static(__dirname + "/apidoc"));
+// used to configure apidoc
+ app.use("/docs", express.static(__dirname + "/apidoc"));
 
 var logger = require('logger').createLogger('development.log');
 
@@ -69,7 +68,7 @@ app.listen(config.port, function () {
 });
 
 var remindCtrl = require('./controllers/questionnaire.js')(mongoose, utils, config, constants);
-cron.schedule('* * * * *', function () {
+cron.schedule('1 2 * * *', function () {
     remindCtrl.remindQuestionnaire();
 
 });

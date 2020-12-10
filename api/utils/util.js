@@ -236,19 +236,21 @@ module.exports = {
         return otpExpiry;
     },
 
-    sendMail:function(name, email, otp){
-        var intro = "Your password is " + otp;
+    sendMail:function(name, email, password){
+        var intro = "Your password is " + password;
         var subject = 'Verification Mail'
         services.email.sendMail(name, email, intro, subject, function(err,data){
-            console.log("err",err,"data",data)
+            console.log("err",err,"data",data);
         })
     },
 
+    
+
     sendPasswordUpdationLinkMail:function(name, email, updationLink){
-        var intro = 'Please use the given link to update your password ' + updationLink ;
-        var subject = 'Update Your Password'
+        var intro = 'Please use the given link to update your password ' + updationLink;
+        var subject = 'Update Your Password';
         services.email.sendMail(name, email, intro, subject, function(err,data){
-            console.log("err",err,"data",data)
+            console.log("err",err,"data",data);
         })
     },
 

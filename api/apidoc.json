@@ -1,0 +1,7 @@
+{
+    "name": "Invision Policy App",
+    "version": "0.1.0",
+    "description": "APIs for Invision Policy Application",
+    "title": "Invision Policy App API documentation",
+    "url" : "localhost:4200/docs"
+  }
