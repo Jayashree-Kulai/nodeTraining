@@ -236,7 +236,7 @@ module.exports = {
         return otpExpiry;
     },
 
-    sendMail:function(name, email, password){
+    sendMail: function(name, email, password){
         var intro = "Your password is " + password;
         var subject = 'Verification Mail'
         services.email.sendMail(name, email, intro, subject, function(err,data){
@@ -244,7 +244,21 @@ module.exports = {
         })
     },
 
-    
+    sendMailForAdmin: function(name, email, password){
+        var intro = "You have been selected as admin.<br>Your password is " + password;
+        var subject = 'Congragulation, Welcome as admin'
+        services.email.sendMail(name, email, intro, subject, function(err,data){
+            console.log("err",err,"data",data);
+        })
+    },    
+
+    sendMailForSuperAdmin: function(name, email, password){
+        var intro = "You have been selected as Super Admin.<br>Your password is " + password;
+        var subject = 'Congragulation, Welcome as super admin'
+        services.email.sendMail(name, email, intro, subject, function(err,data){
+            console.log("err",err,"data",data);
+        })
+    },
 
     sendPasswordUpdationLinkMail:function(name, email, updationLink){
         var intro = 'Please use the given link to update your password ' + updationLink;

@@ -76,7 +76,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     return utils.sendCustomError(req, res, "HTTP_ERR", "DB_ERR");
                 }
                 console.log("new admin details--->", data);
-                utils.sendMail(userObj.name, userObj.mailId, defaultPassword);
+                utils.sendMailForAdmin(userObj.name, userObj.mailId, defaultPassword);
                 console.log("Default password.....", defaultPassword)
 
                 return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
@@ -173,7 +173,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     return utils.sendCustomError(req, res, "HTTP_ERR", "DB_ERR");
                 }
                 console.log("New superAdmin details--->", data);
-                utils.sendMail(userObj.name, userObj.mailId, defaultPassword);
+                utils.sendMailForSuperAdmin(userObj.name, userObj.mailId, defaultPassword);
                 console.log("Default password.....", defaultPassword)
 
                 return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");

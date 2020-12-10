@@ -30,7 +30,7 @@ module.exports = function (app, mongoose, utils, config, constants, upload, logg
 * @apiName Update PolicyStatus
 * @apiGroup QuestionnaireAgreementStatus
 * @apiDescription API to Update PolicyAgreementStatus
-* @apiUse Authorizate
+* @apiUse Authenticate
 * @apiParam {String} questionnaireId questionnaire Id.
 * @apiParamExample {json} Request-Example:
 * {
