@@ -1,5 +1,181 @@
 define({ "api": [
   {
+    "type": "post",
+    "url": "/users/addAdmin",
+    "title": "Add Admin",
+    "name": "Add_Admin",
+    "group": "User",
+    "description": "<p>API for adding an admin.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Admin name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "employeeCode",
+            "description": "<p>Admin employeeCode</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "mailId",
+            "description": "<p>Admin mailId</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/users/addAdmin",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/users/addAdmin"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T08:53:04.161Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": true,\n        \"isSuperAdmin\": false,\n        \"_id\": \"5fd1e1f038573738947ee16c\",\n        \"name\": \"Prabhakara\",\n        \"employeeCode\": \"MNG01\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"password\": \"18d744ceed51cd2ab9f2118157ae0779bd3bf1ea\",\n        \"createdAt\": \"2020-12-10T08:53:04.079Z\",\n        \"updatedAt\": \"2020-12-10T08:53:04.079Z\",\n        \"__v\": 0\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized\nUnauthorized",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/user.js",
+    "groupTitle": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/users/addSuperAdmin",
+    "title": "Add Super Admin",
+    "name": "Add_Super_Admin",
+    "group": "User",
+    "description": "<p>API for adding a super admin.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Super admin name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "employeeCode",
+            "description": "<p>Super admin employeeCode</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "mailId",
+            "description": "<p>Super admin mailId</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/users/addSuperAdmin",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/users/addSuperAdmin"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T08:53:04.161Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": false,\n        \"isSuperAdmin\": true,\n        \"_id\": \"5fd1e1f038573738947ee16c\",\n        \"name\": \"Prabhakara\",\n        \"employeeCode\": \"MNG01\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"password\": \"18d744ceed51cd2ab9f2118157ae0779bd3bf1ea\",\n        \"createdAt\": \"2020-12-10T08:53:04.079Z\",\n        \"updatedAt\": \"2020-12-10T08:53:04.079Z\",\n        \"__v\": 0\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized\nUnauthorized",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/user.js",
+    "groupTitle": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "put",
     "url": "/users/changePassword",
     "title": "Change Password",
@@ -71,6 +247,154 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "routes/user.js",
     "groupTitle": "User"
+  },
+  {
+    "type": "put",
+    "url": "/users/deleteAdmin",
+    "title": "Delete Admin",
+    "name": "Delete_Admin",
+    "group": "User",
+    "description": "<p>API for deleting an admin. It will update 'isAdmin' field of the 'users' collection as 'false'.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "mailId",
+            "description": "<p>Admin mailId, the one, which has to be deleted</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/users/deleteAdmin",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/users/deleteAdmin"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T09:32:33.946Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": false,\n        \"isSuperAdmin\": false,\n        \"_id\": \"5fd1e1669b7243379e261fc4\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"name\": \"Anugraha\",\n        \"employeeCode\": \"MNG001\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized\nUnauthorized",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/user.js",
+    "groupTitle": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "put",
+    "url": "/users/deleteSuperAdmin",
+    "title": "Delete Super Admin",
+    "name": "Delete_Super_Admin",
+    "group": "User",
+    "description": "<p>API for deleting a super admin. It will update 'isSuperAdmin' field of the 'users' collection as 'false'.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "mailId",
+            "description": "<p>Super admin mailId, the one, which has to be deleted</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/users/deleteSuperAdmin",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/users/deleteSuperAdmin"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T09:19:13.737Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": false,\n        \"isSuperAdmin\": false,\n        \"_id\": \"5fd1e1669b7243379e261fc4\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"name\": \"Anugraha\",\n        \"employeeCode\": \"MNG001\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized\nUnauthorized",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/user.js",
+    "groupTitle": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
   },
   {
     "type": "post",
@@ -202,6 +526,94 @@ define({ "api": [
     }
   },
   {
+    "type": "put",
+    "url": "/users/updateAdmin",
+    "title": "Update Admin",
+    "name": "Update_Admin",
+    "group": "User",
+    "description": "<p>API for updating an admin 'name' and 'employeeCode'.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Admin name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "employeeCode",
+            "description": "<p>Admin employeeCode</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "mailId",
+            "description": "<p>Admin mailId (Can't be changed)</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/users/updateAdmin",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/users/updateAdmin"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T09:43:36.839Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": true,\n        \"isSuperAdmin\": false,\n        \"_id\": \"5fd1e1669b7243379e261fc4\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"name\": \"Namitha\",\n        \"employeeCode\": \"MNG100\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized\nUnauthorized",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/user.js",
+    "groupTitle": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "post",
     "url": "/users/sendPasswordUpdateLink",
     "title": "Send Password Updation Link",
@@ -261,5 +673,93 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "routes/user.js",
     "groupTitle": "User"
+  },
+  {
+    "type": "put",
+    "url": "/users/updateSuperAdmin",
+    "title": "Update Super Admin",
+    "name": "Update_Super_Admin",
+    "group": "User",
+    "description": "<p>API for updating a super admin 'name' and 'employeeCode'.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Super admin name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "employeeCode",
+            "description": "<p>Super admin employeeCode</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "mailId",
+            "description": "<p>Super admin mailId (Can't be changed)</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/users/updateSuperAdmin",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/users/updateSuperAdmin"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T09:43:36.839Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": false,\n        \"isSuperAdmin\": true,\n        \"_id\": \"5fd1e1669b7243379e261fc4\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"name\": \"Namitha\",\n        \"employeeCode\": \"MNG100\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized\nUnauthorized",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/user.js",
+    "groupTitle": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
   }
 ] });

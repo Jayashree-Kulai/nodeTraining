@@ -220,21 +220,253 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
 
     // api to to add admin
     userRouter.post("/addAdmin", authenticate, userCtrl.addAdmin);
+     /**
+    * @api {post} /users/addAdmin Add Admin
+    * @apiName Add Admin
+    * @apiGroup User
+    * @apiDescription API for adding an admin.
+    * @apiUse Authenticate 
+    * 
+    * @apiParam {String} name Admin name
+    * @apiParam {String} employeeCode Admin employeeCode
+    * @apiParam {String} mailId Admin mailId
+    * 
+    * @apiExample {curl} Example usage:
+    *     curl -i http://localhost:4200/api/v1/users/addAdmin
+    * @apiSampleRequest http://localhost:4200/api/v1/users/addAdmin
+    * @apiSuccessExample Success-Response:
+    *     HTTP/1.1 200 OK
+    *{
+    "meta": {
+        "code": 200,
+        "message": "Success",
+        "timestamp": "2020-12-10T08:53:04.161Z"
+    },
+    "pagination": {},
+    "data": {
+        "isAdmin": true,
+        "isSuperAdmin": false,
+        "_id": "5fd1e1f038573738947ee16c",
+        "name": "Prabhakara",
+        "employeeCode": "MNG01",
+        "mailId": "anugrahakulai@gmail.com",
+        "password": "18d744ceed51cd2ab9f2118157ae0779bd3bf1ea",
+        "createdAt": "2020-12-10T08:53:04.079Z",
+        "updatedAt": "2020-12-10T08:53:04.079Z",
+        "__v": 0
+    }
+}
+    *    
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 401 Unauthorized
+    *     Unauthorized
+*/
+
 
     // api to update an admin
     userRouter.put("/updateAdmin", authenticate, userCtrl.updateAdmin);
+       /**
+    * @api {put} /users/updateAdmin Update Admin
+    * @apiName Update Admin
+    * @apiGroup User
+    * @apiDescription API for updating an admin 'name' and 'employeeCode'.
+    * @apiUse Authenticate 
+    *
+    * @apiParam {String} name Admin name
+    * @apiParam {String} employeeCode Admin employeeCode
+    * @apiParam {String} mailId Admin mailId (Can't be changed)
+    * 
+    * @apiExample {curl} Example usage:
+    *     curl -i http://localhost:4200/api/v1/users/updateAdmin
+    * @apiSampleRequest http://localhost:4200/api/v1/users/updateAdmin
+    * @apiSuccessExample Success-Response:
+    *     HTTP/1.1 200 OK
+    *{
+    "meta": {
+        "code": 200,
+        "message": "Success",
+        "timestamp": "2020-12-10T09:43:36.839Z"
+    },
+    "pagination": {},
+    "data": {
+        "isAdmin": true,
+        "isSuperAdmin": false,
+        "_id": "5fd1e1669b7243379e261fc4",
+        "mailId": "anugrahakulai@gmail.com",
+        "name": "Namitha",
+        "employeeCode": "MNG100"
+    }
+}
+    *    
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 401 Unauthorized
+    *     Unauthorized
+*/ 
 
     // api to delete an admin
     userRouter.put("/deleteAdmin", authenticate, userCtrl.deleteAdmin);
+    /**
+    * @api {put} /users/deleteAdmin Delete Admin
+    * @apiName Delete Admin
+    * @apiGroup User
+    * @apiDescription API for deleting an admin. It will update 'isAdmin' field of the 'users' collection as 'false'.
+    * @apiUse Authenticate 
+    *
+    * @apiParam {String} mailId Admin mailId, the one, which has to be deleted
+    * 
+    * @apiExample {curl} Example usage:
+    *     curl -i http://localhost:4200/api/v1/users/deleteAdmin
+    * @apiSampleRequest http://localhost:4200/api/v1/users/deleteAdmin
+    * @apiSuccessExample Success-Response:
+    *     HTTP/1.1 200 OK
+    *{
+    "meta": {
+        "code": 200,
+        "message": "Success",
+        "timestamp": "2020-12-10T09:32:33.946Z"
+    },
+    "pagination": {},
+    "data": {
+        "isAdmin": false,
+        "isSuperAdmin": false,
+        "_id": "5fd1e1669b7243379e261fc4",
+        "mailId": "anugrahakulai@gmail.com",
+        "name": "Anugraha",
+        "employeeCode": "MNG001"
+    }
+}
+    *    
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 401 Unauthorized
+    *     Unauthorized
+*/
 
     // api to to add superAdmin
     userRouter.post("/addSuperAdmin", authenticate, userCtrl.addSuperAdmin);
+     /**
+    * @api {post} /users/addSuperAdmin Add Super Admin
+    * @apiName Add Super Admin
+    * @apiGroup User
+    * @apiDescription API for adding a super admin.
+    * @apiUse Authenticate 
+    * 
+    * @apiParam {String} name Super admin name
+    * @apiParam {String} employeeCode Super admin employeeCode
+    * @apiParam {String} mailId Super admin mailId
+    * 
+    * @apiExample {curl} Example usage:
+    *     curl -i http://localhost:4200/api/v1/users/addSuperAdmin
+    * @apiSampleRequest http://localhost:4200/api/v1/users/addSuperAdmin
+    * @apiSuccessExample Success-Response:
+    *     HTTP/1.1 200 OK
+    *{
+    "meta": {
+        "code": 200,
+        "message": "Success",
+        "timestamp": "2020-12-10T08:53:04.161Z"
+    },
+    "pagination": {},
+    "data": {
+        "isAdmin": false,
+        "isSuperAdmin": true,
+        "_id": "5fd1e1f038573738947ee16c",
+        "name": "Prabhakara",
+        "employeeCode": "MNG01",
+        "mailId": "anugrahakulai@gmail.com",
+        "password": "18d744ceed51cd2ab9f2118157ae0779bd3bf1ea",
+        "createdAt": "2020-12-10T08:53:04.079Z",
+        "updatedAt": "2020-12-10T08:53:04.079Z",
+        "__v": 0
+    }
+}
+    *    
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 401 Unauthorized
+    *     Unauthorized
+*/
 
     // api to update a superAdmin
     userRouter.put("/updateSuperAdmin", authenticate, userCtrl.updateSuperAdmin);
+    /**
+    * @api {put} /users/updateSuperAdmin Update Super Admin
+    * @apiName Update Super Admin
+    * @apiGroup User
+    * @apiDescription API for updating a super admin 'name' and 'employeeCode'.
+    * @apiUse Authenticate 
+    *
+    * @apiParam {String} name Super admin name
+    * @apiParam {String} employeeCode Super admin employeeCode
+    * @apiParam {String} mailId Super admin mailId (Can't be changed)
+    * 
+    * @apiExample {curl} Example usage:
+    *     curl -i http://localhost:4200/api/v1/users/updateSuperAdmin
+    * @apiSampleRequest http://localhost:4200/api/v1/users/updateSuperAdmin
+    * @apiSuccessExample Success-Response:
+    *     HTTP/1.1 200 OK
+    *{
+    "meta": {
+        "code": 200,
+        "message": "Success",
+        "timestamp": "2020-12-10T09:43:36.839Z"
+    },
+    "pagination": {},
+    "data": {
+        "isAdmin": false,
+        "isSuperAdmin": true,
+        "_id": "5fd1e1669b7243379e261fc4",
+        "mailId": "anugrahakulai@gmail.com",
+        "name": "Namitha",
+        "employeeCode": "MNG100"
+    }
+}
+    *    
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 401 Unauthorized
+    *     Unauthorized
+*/ 
 
     // api to delete a superAdmin
     userRouter.put("/deleteSuperAdmin", authenticate, userCtrl.deleteSuperAdmin);
-
+    /**
+    * @api {put} /users/deleteSuperAdmin Delete Super Admin
+    * @apiName Delete Super Admin
+    * @apiGroup User
+    * @apiDescription API for deleting a super admin. It will update 'isSuperAdmin' field of the 'users' collection as 'false'.
+    * @apiUse Authenticate 
+    *
+    * @apiParam {String} mailId Super admin mailId, the one, which has to be deleted
+    * 
+    * @apiExample {curl} Example usage:
+    *     curl -i http://localhost:4200/api/v1/users/deleteSuperAdmin
+    * @apiSampleRequest http://localhost:4200/api/v1/users/deleteSuperAdmin
+    * @apiSuccessExample Success-Response:
+    *     HTTP/1.1 200 OK
+    *{
+    "meta": {
+        "code": 200,
+        "message": "Success",
+        "timestamp": "2020-12-10T09:19:13.737Z"
+    },
+    "pagination": {},
+    "data": {
+        "isAdmin": false,
+        "isSuperAdmin": false,
+        "_id": "5fd1e1669b7243379e261fc4",
+        "mailId": "anugrahakulai@gmail.com",
+        "name": "Anugraha",
+        "employeeCode": "MNG001"
+    }
+}
+    *    
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 401 Unauthorized
+    *     Unauthorized
+*/
     app.use("/api/v1/users", userRouter);
 };
