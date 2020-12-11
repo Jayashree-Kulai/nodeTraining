@@ -19,15 +19,16 @@ module.exports = function (mongoose, utils, config, constants, logger) {
     var Users = mongoose.model('Users');
     var userCtrl = {}
 
-    userCtrl.createUser = async function (req, res) {
+    userCtrl.createUser = async function (req, res, pathName) {
         try {
-            var userObj = {};
+            
             // var datafile = path.join(__dirname, "..", "uploads/") + 'END-USER.xlsx';
             // var dataExcel = await utils.readexcelsheet(datafile)
-            var dataExcel = await utils.readexcelsheet(req.file.path);
+            var dataExcel = await utils.readexcelsheet(pathName);
             console.log("dataExcel...........", dataExcel)
 
             dataExcel.forEach(async function (user) {
+                var userObj = {};
                 userObj.mailId = user.EMAIL;
                 userObj.name = user.NAME;
                 userObj.employeeCode = user.EMPLOYEE_CODE;
@@ -37,12 +38,11 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 query.mailId = user.EMAIL;
                 let data = await Users.getData(query);
                 if(data) {
-                    console.log("User already exists, data after getting---",data);
-                    //utils.sendMail(data.name, data.mailId, data.password);
+                    console.log("This user already exists in user collection,---",data);
                 }
                 
 
-                if (!data) {
+                else {
                     utils.sendMail(userObj.name, userObj.mailId, userObj.password);
                     console.log("userObj.password.....", userObj.password)
 
@@ -50,9 +50,8 @@ module.exports = function (mongoose, utils, config, constants, logger) {
 
                     console.log("Encrypted password.....", userObj.password)
 
-                    console.log("user obj.....", userObj)
-
                     let data = await Users.addData(userObj);
+                    console.log("Data added to successfully to user collection---", data);
                 }
                 //utils.sendCustomError(req, res, "SUCCESS", "SUCCESS")
             })
@@ -266,6 +265,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
                 console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
                 var saveTo = path.join(__dirname + '/../uploads', path.basename(filename));
+                userCtrl.createUser(req,res,saveTo);
                 file.pipe(fs.createWriteStream(saveTo));
 
                 // We are streaming! Handle chunks

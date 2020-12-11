@@ -54,22 +54,22 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     }
 
                     if (req.body.endDate) {
-                        if(req.body.endDate <= req.body.startDate) {
+                        if (req.body.endDate <= req.body.startDate) {
                             return utils.sendCustomError(req, res, "INVALID", "BAD_PARAMS");
                         }
                         questionnaireObj.endDate = req.body.endDate;
                     }
 
                     if (req.body.reminder) {
-                        if(req.body.reminder < 0) {
+                        if (req.body.reminder < 0) {
                             return utils.sendCustomError(req, res, "INVALID", "BAD_PARAMS");
                         }
                         questionnaireObj.reminder = req.body.reminder;
                     }
 
-                    // if (req.body.pptFile) {
+                    if (req.body.pptFile) {
                         questionnaireObj.pptFile = path.join(__dirname, "..", "uploads/") + req.body.pptFile;
-                    // }
+                    }
 
                     if (req.body.excelSheet) {
                         questionnaireObj.excelSheet = path.join(__dirname, "..", "uploads/") + req.body.excelSheet;
@@ -106,7 +106,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
     questionnaireCtrl.previewQuestionnaire = async function (req, res) {
         try {
             if (req.user && req.user.isAdmin) {
-                if(!req.body.questionnaireId) {
+                if (!req.body.questionnaireId) {
                     return utils.sendCustomError(req, res, "BAD_PARAMS", "PARAMS_MISSING")
                 }
                 var query = {};
@@ -169,12 +169,10 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     questionnaireObj.questionnaireId = req.body.questionnaireId;
                 }
 
-                let data = await Questionnaires.getDataById(questionnaireObj.questionnaireId);
-                console.log("questionnire data.......", data);
-                var mailBody = data.mailBody;
-                // var filename= data.Select_Participant_XL_Sheet;
-                // var datafile = path.join(__dirname, "..", "uploads/") + filename;
-                var datafile = data.excelSheet;
+                let questionnaireData = await Questionnaires.getDataById(questionnaireObj.questionnaireId);
+                console.log("questionnire data.......", questionnaireData);
+                var mailBody = questionnaireData.mailBody;
+                var datafile = questionnaireData.excelSheet;
                 var dataExcel = await utils.readexcelsheet(datafile)
                 console.log("dataExcel...........", dataExcel)
 
@@ -189,20 +187,19 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     console.log("userObj.password.....", userPassword)
 
                     userObj.password = utils.encryptPassword(userObj.password);
-                    //var sub = "Read and Accept the Policy";
-                    //var link = "http://localhost:4000/policy.robosoftin.com/questionnaires?" + questionnaireObj.Questionnaire_id;
-                    
-                    console.log("user obj.....", userObj)
 
-                    let data = await Users.addData(userObj);
+                    console.log("user obj.....", userObj)
+                    var query = {};
+                    query.mailId = user.EMAIL;
+                    let data = await Users.getData(query);
+                    //let data = await Users.getData(userObj);
 
                     //var intro ="Username: "+data.email+",Password: "+userPassword +",Please use this credential to login into Invision";
                     questionnaireAgreementStatusObj.userId = data._id;
                     questionnaireAgreementStatusObj.questionnaireId = req.body.questionnaireId;
                     let questionnaireAgreementStatusData = await QuestionnaireAgreementStatus.addData(questionnaireAgreementStatusObj);
-                    console.log("added data--->",questionnaireAgreementStatusData)
-                    //await utils.sendMail(data.name,data.email, intro, sub, link);
-                    await utils.sendPublishMail(userObj.name, userObj.mailId, mailBody);
+                    console.log("Added data to questionnaireAgreementStatus collection--->", questionnaireAgreementStatusData)
+                    await utils.sendPublishMail(userObj.name, userObj.mailId, questionnaireData);
                 });
             } else {
                 return utils.sendAuthError(req, res, "NOT_AUTHERIZED", "NOT_AUTHERIZED")
@@ -231,12 +228,9 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             var xlsData = [];
             if (data.length > 0) {
                 data.forEach(element => {
-                    console.log("Current Element------>", element);;
-                    //console.log("Current Element of user mail------>", element.userId.name);
+                    console.log("Current Element------>", element);
                     console.log("Current Element of Questionnaire_Id------>", element.questionnaireId);
-                    //var questionnaireId = element.questionnaireId;
-                    //console.log("Current Element of Questionnaire_Id------>", Questionnaireid);
-                    xlsData.push({ "Name": element.userId.name, "E-mail": element.userId.mailId, "Employee_code": element.userId.employeeCode ,"Policy_Id" : element.questionnaireId, "Policy_Status" : element.agreed});
+                    xlsData.push({ "Name": element.userId.name, "E-mail": element.userId.mailId, "Employee_code": element.userId.employeeCode, "Policy_Id": element.questionnaireId, "Policy_Status": element.agreed });
                 });
             }
             try {
@@ -262,37 +256,37 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 console.error(err);
             }
         } else {
-           //  utils.sendAuthError(req, res, "NOT_AUTHERIZED", "NOT_AUTHERIZED")
+            //  utils.sendAuthError(req, res, "NOT_AUTHERIZED", "NOT_AUTHERIZED")
         }
     }
 
     questionnaireCtrl.remindQuestionnaire = async function (req, res) {
-        try {          
-                // var questionnaireObj = {};
-                // if (req.body.Questionnaire_id) {
-                //     questionnaireObj.Questionnaire_id = req.body.Questionnaire_id;
-                // }
-                // let data = await Questionnaires.getDataById(questionnaireObj.Questionnaire_id);
-                // console.log("questionnire data.......", data);
-                // var filename= data.Select_Participant_XL_Sheet;
-                // var datafile = path.join(__dirname, "..", "uploads/") + filename;
-                var datafile = path.join(__dirname, "..", "uploads/") + 'END_USERS.xlsx';
-                var dataExcel = await utils.readexcelsheet(datafile)
-                console.log("dataExcel...........", dataExcel)
+        try {
+            // var questionnaireObj = {};
+            // if (req.body.Questionnaire_id) {
+            //     questionnaireObj.Questionnaire_id = req.body.Questionnaire_id;
+            // }
+            // let data = await Questionnaires.getDataById(questionnaireObj.Questionnaire_id);
+            // console.log("questionnire data.......", data);
+            // var filename= data.Select_Participant_XL_Sheet;
+            // var datafile = path.join(__dirname, "..", "uploads/") + filename;
+            var datafile = path.join(__dirname, "..", "uploads/") + 'END_USERS.xlsx';
+            var dataExcel = await utils.readexcelsheet(datafile)
+            console.log("dataExcel...........", dataExcel)
 
-                var userObj = {};
-                dataExcel.forEach(async function (user) {
-                    userObj.mailId = user.EMAIL;
-                    
-                    var sub = "Reminder";
-                    var link = "https://projects.invisionapp.com/d/main?origin=v7#/console/20430572/432692886/preview?scrollOffset=0";
-                    var intro ="Please Complete the Policy Process within a Due Date";
+            var userObj = {};
+            dataExcel.forEach(async function (user) {
+                userObj.mailId = user.EMAIL;
 
-                    console.log("user obj.....", userObj)
+                var sub = "Reminder";
+                var link = "https://projects.invisionapp.com/d/main?origin=v7#/console/20430572/432692886/preview?scrollOffset=0";
+                var intro = "Please Complete the Policy Process within a Due Date";
 
-                    let data = await Users.getData(userObj);
-                    utils.sendReminderMail(data.name, data.mailId, data.password);
-                });
+                console.log("user obj.....", userObj)
+
+                let data = await Users.getData(userObj);
+                utils.sendReminderMail(data.name, data.mailId, data.password);
+            });
         } catch (error) {
             console.log("____________Err", error)
             return utils.sendDBCallbackErrs(req, res, error, null);

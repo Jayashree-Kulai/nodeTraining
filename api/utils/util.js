@@ -247,8 +247,11 @@ module.exports = {
         })
     },
 
-    sendPublishMail: function (name, email, mailBody) {
-        var intro = mailBody;
+    sendPublishMail: function (name, email, questionnaireData) {
+        var intro = "<b>" + "Policy Title : " + questionnaireData.title + "</b>" + 
+                    "<br>" + questionnaireData.mailBody + "<br>" + 
+                    "<a href='https://projects.invisionapp.com/d/login?redir=%2Fd%2Fmain%3Forigin%3Dv7&origin=v7#/console/20430572/432692886/preview?scrollOffset=0'>Click here</a>";
+        
         var subject = 'New Policy Notification';
         services.email.sendMail(name, email, intro, subject, function (err, data) {
             console.log("err", err, "data", data);
