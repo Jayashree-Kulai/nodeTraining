@@ -45,10 +45,10 @@ module.exports = {
             errorMsg = extraMsg + " : " + errorMsg;
         }
 
-        if(message.errors){
+        if (message.errors) {
             message = message.message
         }
-        
+
         res.status(httpStatus)
             .json({
                 meta: {
@@ -105,7 +105,7 @@ module.exports = {
                 }
             });
 
-            
+
     },
     //generic format function for sending Success response
     sendResponse: function (req, res, data, code, message, count) {
@@ -158,17 +158,17 @@ module.exports = {
     },
 
     encryptPassword: function (password) {
-        var ciphertext = CryptoJS.HmacSHA1(password, config.passwordSecret).toString();
-        // var ciphertext = CryptoJS.AES.encrypt(password, config.passwordSecret).toString();
+       var ciphertext = CryptoJS.HmacSHA1(password, config.passwordSecret).toString();
+        //var ciphertext = CryptoJS.AES.encrypt(password, config.passwordSecret).toString();
         return ciphertext;
 
     },
 
     generateToken: function (payload) {
-        console.log("_________payload",payload);
-        console.log("-------config.jwtTokenSecret",config.jwtTokenSecret)
+        console.log("_________payload", payload);
+        console.log("-------config.jwtTokenSecret", config.jwtTokenSecret)
         var token = jwt.encode(payload, config.jwtTokenSecret);
-        console.log("token-",token);
+        console.log("token-", token);
         return token;
     },
 
@@ -194,6 +194,7 @@ module.exports = {
         var tokenExpiry = new Date(currentDate.setMinutes(currentDate.getMinutes() + config.refreshTokenExpiry));
         return tokenExpiry;
     },
+
     verifyToken: function (token, cb) {
         var payload;
         // var payload = jwt.decode(token, config.jwtTokenSecret);
@@ -206,6 +207,7 @@ module.exports = {
             return cb(err, null)
         }
     },
+
     verifyToken: function (token) {
         var payload;
         // var payload = jwt.decode(token, config.jwtTokenSecret);
@@ -214,14 +216,15 @@ module.exports = {
             payload = jwt.decode(token, config.jwtTokenSecret);
             console.log(payload);
             return payload;
-            
+
             // cb(null, payload)
             // return payload
         } catch (err) {
             return err;
         }
     },
-    generateBearerToken:function(){
+
+    generateBearerToken: function () {
         return uuidv4();
     },
 
@@ -236,53 +239,61 @@ module.exports = {
         return otpExpiry;
     },
 
-    sendMail: function(name, email, password){
+    sendMail: function (name, email, password) {
         var intro = "Your password is " + password;
         var subject = 'Verification Mail'
-        services.email.sendMail(name, email, intro, subject, function(err,data){
-            console.log("err",err,"data",data);
+        services.email.sendMail(name, email, intro, subject, function (err, data) {
+            console.log("err", err, "data", data);
         })
     },
 
-    sendMailForAdmin: function(name, email, password){
+    sendPublishMail: function (name, email, mailBody) {
+        var intro = mailBody;
+        var subject = 'New Policy Notification';
+        services.email.sendMail(name, email, intro, subject, function (err, data) {
+            console.log("err", err, "data", data);
+        })
+    },
+
+    sendMailForAdmin: function (name, email, password) {
         var intro = "You have been selected as admin.<br>Your password is " + password;
         var subject = 'Congragulation, Welcome as admin'
-        services.email.sendMail(name, email, intro, subject, function(err,data){
-            console.log("err",err,"data",data);
+        services.email.sendMail(name, email, intro, subject, function (err, data) {
+            console.log("err", err, "data", data);
         })
-    },    
+    },
 
-    sendMailForSuperAdmin: function(name, email, password){
+    sendMailForSuperAdmin: function (name, email, password) {
         var intro = "You have been selected as Super Admin.<br>Your password is " + password;
         var subject = 'Congragulation, Welcome as super admin'
-        services.email.sendMail(name, email, intro, subject, function(err,data){
-            console.log("err",err,"data",data);
+        services.email.sendMail(name, email, intro, subject, function (err, data) {
+            console.log("err", err, "data", data);
         })
     },
 
-    sendReminderMail: function(name, email, password){
+    sendReminderMail: function (name, email, password) {
         var intro = 'Please accept the policy within due date';
         var subject = 'Remider'
-        services.email.sendMail(name, email, intro, subject, function(err,data){
-            console.log("err",err,"data",data);
+        services.email.sendMail(name, email, intro, subject, function (err, data) {
+            console.log("err", err, "data", data);
         })
     },
 
-    sendPasswordUpdationLinkMail:function(name, email, updationLink){
+    sendPasswordUpdationLinkMail: function (name, email, updationLink) {
         var intro = 'Please use the given link to update your password ' + updationLink;
         var subject = 'Update Your Password';
-        services.email.sendMail(name, email, intro, subject, function(err,data){
-            console.log("err",err,"data",data);
+        services.email.sendMail(name, email, intro, subject, function (err, data) {
+            console.log("err", err, "data", data);
         })
     },
 
 
     readexcelsheet: function (filepath) {
         var wb = xlsx.readFile(filepath);
-        console.log('filePath------->',filepath);
+        console.log('filePath------->', filepath);
         var ws = wb.Sheets["Sheet 1"];
         var data = xlsx.utils.sheet_to_json(ws);
         return data;
-        }
+    }
 
 };

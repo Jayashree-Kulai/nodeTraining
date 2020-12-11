@@ -22,7 +22,8 @@ module.exports = function (mongoose, utils, config, constants, logger) {
     userCtrl.createUser = async function (req, res) {
         try {
             var userObj = {};
-
+            // var datafile = path.join(__dirname, "..", "uploads/") + 'END-USER.xlsx';
+            // var dataExcel = await utils.readexcelsheet(datafile)
             var dataExcel = await utils.readexcelsheet(req.file.path);
             console.log("dataExcel...........", dataExcel)
 
@@ -31,18 +32,28 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 userObj.name = user.NAME;
                 userObj.employeeCode = user.EMPLOYEE_CODE;
                 userObj.password = utils.generatePassword();
+                console.log("UserObj before adding->",userObj);
+                var query = {};
+                query.mailId = user.EMAIL;
+                let data = await Users.getData(query);
+                if(data) {
+                    console.log("User already exists, data after getting---",data);
+                    //utils.sendMail(data.name, data.mailId, data.password);
+                }
+                
 
-                utils.sendMail(userObj.name, userObj.mailId, userObj.password);
-                console.log("userObj.password.....", userObj.password)
+                if (!data) {
+                    utils.sendMail(userObj.name, userObj.mailId, userObj.password);
+                    console.log("userObj.password.....", userObj.password)
 
-                userObj.password = utils.encryptPassword(userObj.password);
+                    userObj.password = utils.encryptPassword(userObj.password);
 
-                console.log("Encrypted password.....", userObj.password)
+                    console.log("Encrypted password.....", userObj.password)
 
-                console.log("user obj.....", userObj)
+                    console.log("user obj.....", userObj)
 
-                let data = await Users.addData(userObj);
-
+                    let data = await Users.addData(userObj);
+                }
                 //utils.sendCustomError(req, res, "SUCCESS", "SUCCESS")
             })
 
@@ -106,22 +117,22 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 } else {
                     var userObj = {};
 
-                    if(req.body.name) {
+                    if (req.body.name) {
                         userObj.name = req.body.name;
                     }
 
-                    if(req.body.employeeCode) {
+                    if (req.body.employeeCode) {
                         userObj.employeeCode = req.body.employeeCode;
                     }
-                
+
                     data = await Users.updateDataById(data._id, userObj);
                     return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
                 }
             }
         } catch (error) {
             return utils.sendDBCallbackErrs(req, res, error, null);
-        } 
-    }    
+        }
+    }
 
     userCtrl.deleteAdmin = async function (req, res) {
         try {
@@ -140,7 +151,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     return utils.sendCustomError(req, res, "HTTP_ERR", "DATA_NOT_EXISTS")
                 } else {
                     data.isAdmin = false;
-                    data = await Users.updateDataById(data._id, { isAdmin : data.isAdmin });
+                    data = await Users.updateDataById(data._id, { isAdmin: data.isAdmin });
                     return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
                 }
             }
@@ -201,22 +212,22 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 } else {
                     var userObj = {};
 
-                    if(req.body.name) {
+                    if (req.body.name) {
                         userObj.name = req.body.name;
                     }
 
-                    if(req.body.employeeCode) {
+                    if (req.body.employeeCode) {
                         userObj.employeeCode = req.body.employeeCode;
                     }
-                
+
                     data = await Users.updateDataById(data._id, userObj);
                     return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
                 }
             }
         } catch (error) {
             return utils.sendDBCallbackErrs(req, res, error, null);
-        } 
-    }  
+        }
+    }
 
     userCtrl.deleteSuperAdmin = async function (req, res) {
         try {
@@ -235,7 +246,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     return utils.sendCustomError(req, res, "HTTP_ERR", "DATA_NOT_EXISTS")
                 } else {
                     data.isSuperAdmin = false;
-                    data = await Users.updateDataById(data._id, { isSuperAdmin : data.isSuperAdmin });
+                    data = await Users.updateDataById(data._id, { isSuperAdmin: data.isSuperAdmin });
                     return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
                 }
             }

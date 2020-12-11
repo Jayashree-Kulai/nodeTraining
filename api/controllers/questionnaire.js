@@ -72,7 +72,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     // }
 
                     if (req.body.excelSheet) {
-                        questionnaireObj.excelSheet = req.body.excelSheet;
+                        questionnaireObj.excelSheet = path.join(__dirname, "..", "uploads/") + req.body.excelSheet;
                     }
 
                     if (req.body.mailBody) {
@@ -164,14 +164,17 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             if (req.user && req.user.isAdmin) {
 
                 var questionnaireObj = {};
+
                 if (req.body.questionnaireId) {
                     questionnaireObj.questionnaireId = req.body.questionnaireId;
                 }
+
                 let data = await Questionnaires.getDataById(questionnaireObj.questionnaireId);
                 console.log("questionnire data.......", data);
+                var mailBody = data.mailBody;
                 // var filename= data.Select_Participant_XL_Sheet;
                 // var datafile = path.join(__dirname, "..", "uploads/") + filename;
-                var datafile = path.join(__dirname, "..", "uploads/") + 'END_USERS.xlsx';
+                var datafile = data.excelSheet;
                 var dataExcel = await utils.readexcelsheet(datafile)
                 console.log("dataExcel...........", dataExcel)
 
@@ -186,20 +189,20 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     console.log("userObj.password.....", userPassword)
 
                     userObj.password = utils.encryptPassword(userObj.password);
-                    var sub = "Read and Accept the Policy";
-                    var link = "http://localhost:4000/policy.robosoftin.com/questionnaires?" + questionnaireObj.Questionnaire_id;
+                    //var sub = "Read and Accept the Policy";
+                    //var link = "http://localhost:4000/policy.robosoftin.com/questionnaires?" + questionnaireObj.Questionnaire_id;
                     
                     console.log("user obj.....", userObj)
 
                     let data = await Users.addData(userObj);
 
-                    var intro ="Username: "+data.email+",Password: "+userPassword +",Please use this credential to login into Invision";
+                    //var intro ="Username: "+data.email+",Password: "+userPassword +",Please use this credential to login into Invision";
                     questionnaireAgreementStatusObj.userId = data._id;
                     questionnaireAgreementStatusObj.questionnaireId = req.body.questionnaireId;
                     let questionnaireAgreementStatusData = await QuestionnaireAgreementStatus.addData(questionnaireAgreementStatusObj);
                     console.log("added data--->",questionnaireAgreementStatusData)
                     //await utils.sendMail(data.name,data.email, intro, sub, link);
-                    await utils.sendMail(userObj.name, userObj.mailId, userObj.password);
+                    await utils.sendPublishMail(userObj.name, userObj.mailId, mailBody);
                 });
             } else {
                 return utils.sendAuthError(req, res, "NOT_AUTHERIZED", "NOT_AUTHERIZED")
