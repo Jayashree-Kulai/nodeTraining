@@ -50,6 +50,13 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     }
 
                     if (req.body.startDate) {
+                        var startDate = new Date(req.body.startDate)
+                        var currentDate = new Date();
+                        console.log("req.startDate   ", startDate)
+                        console.log("Current date     ", currentDate);
+                        if (startDate <= currentDate) {
+                            return utils.sendCustomError(req, res, "INVALID", "BAD_PARAMS");
+                        }
                         questionnaireObj.startDate = req.body.startDate;
                     }
 
