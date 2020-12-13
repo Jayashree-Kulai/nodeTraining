@@ -198,5 +198,8 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
     *     Unauthorized
 */
 
+//API for remider 
+questionnaireRouter.post("/remindQuestionnaire", questionnaireCtrl.remindQuestionnaire);
+
     app.use("/api/v1/questionnaires", questionnaireRouter);
 };

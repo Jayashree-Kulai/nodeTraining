@@ -54,7 +54,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                         var currentDate = new Date();
                         console.log("req.startDate   ", startDate)
                         console.log("Current date     ", currentDate);
-                        if (startDate <= currentDate) {
+                        if (startDate < currentDate) {
                             return utils.sendCustomError(req, res, "INVALID", "BAD_PARAMS");
                         }
                         questionnaireObj.startDate = req.body.startDate;
@@ -249,13 +249,13 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                             console.log(err);
                         } else {
                             console.log("Success");
-                            //utils.sendCustomError(req, res, "SUCCESS", "SUCCESS")
-                            fs.unlink(path.join(__dirname + '/../downloads') + '/report.xlsx', function (err) {
-                                if (err) {
-                                    console.error(err);
-                                }
-                                console.log('Temp File Delete');
-                            });
+                            // utils.sendCustomError(req, res, "SUCCESS", "SUCCESS")
+                            // fs.unlink(path.join(__dirname + '/../downloads') + '/report.xlsx', function (err) {
+                            //     if (err) {
+                            //         console.error(err);
+                            //     }
+                            //     console.log('Temp File Delete');
+                            // });
                         }
                     });
                 });
@@ -269,37 +269,76 @@ module.exports = function (mongoose, utils, config, constants, logger) {
 
     questionnaireCtrl.remindQuestionnaire = async function (req, res) {
         try {
-            // var questionnaireObj = {};
-            // if (req.body.Questionnaire_id) {
-            //     questionnaireObj.Questionnaire_id = req.body.Questionnaire_id;
-            // }
-            // let data = await Questionnaires.getDataById(questionnaireObj.Questionnaire_id);
-            // console.log("questionnire data.......", data);
-            // var filename= data.Select_Participant_XL_Sheet;
-            // var datafile = path.join(__dirname, "..", "uploads/") + filename;
-            var datafile = path.join(__dirname, "..", "uploads/") + 'END_USERS.xlsx';
-            var dataExcel = await utils.readexcelsheet(datafile)
-            console.log("dataExcel...........", dataExcel)
+            var questionnaireObj = {};
+            if (req.body.questionnaireId) {
+                questionnaireObj.questionnaireId = req.body.questionnaireId;
+            }
 
-            var userObj = {};
-            dataExcel.forEach(async function (user) {
-                userObj.mailId = user.EMAIL;
+            let questionnaireData = await Questionnaires.getDataById(questionnaireObj.questionnaireId);
+            console.log("questionnire data.......", questionnaireData);
 
-                var sub = "Reminder";
-                var link = "https://projects.invisionapp.com/d/main?origin=v7#/console/20430572/432692886/preview?scrollOffset=0";
-                var intro = "Please Complete the Policy Process within a Due Date";
+            var cuurentDate = new Date();
+            var startDate = new Date(questionnaireData.startDate);
+            var endDate = new Date(questionnaireData.endDate);
+            var query = {};
+            query.questionnaireId = questionnaireObj.questionnaireId;
+            if (startDate <= cuurentDate && cuurentDate <= endDate) {
+                var queryObj = {};
+                queryObj.query = {};
+                queryObj.query.questionnaireId = questionnaireObj.questionnaireId;
+                queryObj.options = {};
+                queryObj.populate = ([{ path: 'userId', select: 'name mailId employeeCode' }])
+                let questionnaireAgreementStatusData = await QuestionnaireAgreementStatus.getLists(queryObj);
 
-                console.log("user obj.....", userObj)
+                console.log("QuestionnaireAgreementStatus--->", questionnaireAgreementStatusData);
 
-                let data = await Users.getData(userObj);
-                utils.sendReminderMail(data.name, data.mailId, data.password);
-            });
+                questionnaireAgreementStatusData.forEach(async function (user) {
+                    if (user.agreed == false) {
+                        utils.sendReminderMail(user.userId.name, user.userId.mailId, questionnaireData);
+                    }
+                })
+            }
         } catch (error) {
             console.log("____________Err", error)
             return utils.sendDBCallbackErrs(req, res, error, null);
         }
 
     }
+
+
+    // questionnaireCtrl.remindQuestionnaire = async function (req, res) {
+    //     try {
+    //         // var questionnaireObj = {};
+    //         // if (req.body.Questionnaire_id) {
+    //         //     questionnaireObj.Questionnaire_id = req.body.Questionnaire_id;
+    //         // }
+    //         // let data = await Questionnaires.getDataById(questionnaireObj.Questionnaire_id);
+    //         // console.log("questionnire data.......", data);
+    //         // var filename= data.Select_Participant_XL_Sheet;
+    //         // var datafile = path.join(__dirname, "..", "uploads/") + filename;
+    //         var datafile = path.join(__dirname, "..", "uploads/") + 'END_USERS.xlsx';
+    //         var dataExcel = await utils.readexcelsheet(datafile)
+    //         console.log("dataExcel...........", dataExcel)
+
+    //         var userObj = {};
+    //         dataExcel.forEach(async function (user) {
+    //             userObj.mailId = user.EMAIL;
+
+    //             var sub = "Reminder";
+    //             var link = "https://projects.invisionapp.com/d/main?origin=v7#/console/20430572/432692886/preview?scrollOffset=0";
+    //             var intro = "Please Complete the Policy Process within a Due Date";
+
+    //             console.log("user obj.....", userObj)
+
+    //             let data = await Users.getData(userObj);
+    //             utils.sendReminderMail(data.name, data.mailId, data.password);
+    //         });
+    //     } catch (error) {
+    //         console.log("____________Err", error)
+    //         return utils.sendDBCallbackErrs(req, res, error, null);
+    //     }
+
+    // }
 
 
 

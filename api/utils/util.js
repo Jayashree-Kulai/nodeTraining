@@ -274,8 +274,8 @@ module.exports = {
         })
     },
 
-    sendReminderMail: function (name, email, password) {
-        var intro = 'Please accept the policy within due date';
+    sendReminderMail: function (name, email, questionnaireData) {
+        var intro = 'Please accept the policy on or before ' + questionnaireData.endDate + '<br>' + 'Policy Title : ' + questionnaireData.title;
         var subject = 'Remider'
         services.email.sendMail(name, email, intro, subject, function (err, data) {
             console.log("err", err, "data", data);
