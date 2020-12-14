@@ -17,11 +17,12 @@ const user = require("../routes/user");
 module.exports = function (mongoose, utils, config, constants, logger) {
 
     var Users = mongoose.model('Users');
+    var QuestionnaireAgreementStatus = mongoose.model('QuestionnaireAgreementStatus');
     var userCtrl = {}
 
     userCtrl.createUser = async function (req, res, pathName) {
         try {
-            
+
             // var datafile = path.join(__dirname, "..", "uploads/") + 'END-USER.xlsx';
             // var dataExcel = await utils.readexcelsheet(datafile)
             var dataExcel = await utils.readexcelsheet(pathName);
@@ -33,14 +34,14 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 userObj.name = user.NAME;
                 userObj.employeeCode = user.EMPLOYEE_CODE;
                 userObj.password = utils.generatePassword();
-                console.log("UserObj before adding->",userObj);
+                console.log("UserObj before adding->", userObj);
                 var query = {};
                 query.mailId = user.EMAIL;
                 let data = await Users.getData(query);
-                if(data) {
-                    console.log("This user already exists in user collection,---",data);
+                if (data) {
+                    console.log("This user already exists in user collection,---", data);
                 }
-                
+
 
                 else {
                     utils.sendMail(userObj.name, userObj.mailId, userObj.password);
@@ -265,7 +266,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
                 console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
                 var saveTo = path.join(__dirname + '/../uploads', path.basename(filename));
-                userCtrl.createUser(req,res,saveTo);
+                userCtrl.createUser(req, res, saveTo);
                 file.pipe(fs.createWriteStream(saveTo));
 
                 // We are streaming! Handle chunks
@@ -431,6 +432,34 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 }
             }
         } catch (error) {
+            return utils.sendDBCallbackErrs(req, res, error, null);
+        }
+    }
+
+    userCtrl.getPendingAgreements = async function (req, res) {
+        try {
+            var query = {};
+            query.name = req.user.name;
+            let data = await Users.getData(query);
+            console.log("Data---> for  accept pending ---> ", data);
+
+            var queryObj = {};
+            queryObj.query = {};
+            queryObj.query.userId = data._id;
+            queryObj.options = {};
+            queryObj.populate = ([{ path: 'userId', select: 'name mailId employeeCode' }])
+            let questionnaireAgreementStatusData = await QuestionnaireAgreementStatus.getLists(queryObj);
+            console.log("QuestionnaireAgreementStatus--->", questionnaireAgreementStatusData);
+            let pendingAgreements = [];
+            questionnaireAgreementStatusData.forEach(async function (agreement) {
+                if (agreement.agreed == false) {
+                    console.log("Pending ---->", agreement);
+                    pendingAgreements.push(agreement);
+                }
+            })
+            return utils.sendResponse(req, res, pendingAgreements, "SUCCESS", "SUCCESS");
+        } catch (error) {
+            console.log("____________Err", error)
             return utils.sendDBCallbackErrs(req, res, error, null);
         }
     }

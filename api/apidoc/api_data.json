@@ -831,6 +831,67 @@
     }
   },
   {
+    "type": "get",
+    "url": "/users/getPendingAgreements",
+    "title": "Get pending agreements",
+    "name": "Get_pending_agreements",
+    "group": "User",
+    "description": "<p>API for getting pending agreements of specific user</p>",
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/users/getPendingAgreements",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/users/getPendingAgreements"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-14T10:27:57.077Z\"\n    },\n    \"pagination\": {},\n    \"data\": [\n        {\n            \"_id\": \"5fd353c75202d54111eaa140\",\n            \"agreed\": false,\n            \"userId\": {\n                \"_id\": \"5fd20978eff7064e5ef86f27\",\n                \"mailId\": \"jayashree.cs16@sahyadri.edu.in\",\n                \"name\": \"Jayashree\",\n                \"employeeCode\": \"MNG003\"\n            },\n            \"questionnaireId\": \"5fd20836d7c9764d8df81ad2\"\n        },\n        {\n            \"_id\": \"5fd73b547f6f879badea3927\",\n            \"agreed\": false,\n            \"userId\": {\n                \"_id\": \"5fd20978eff7064e5ef86f27\",\n                \"mailId\": \"jayashree.cs16@sahyadri.edu.in\",\n                \"name\": \"Jayashree\",\n                \"employeeCode\": \"MNG003\"\n            },\n            \"questionnaireId\": \"5fd20836d7c9764d8df81ad2\"\n        }\n    ]\n   }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized\nUnauthorized",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/user.js",
+    "groupTitle": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "post",
     "url": "/users/login",
     "title": "Login",

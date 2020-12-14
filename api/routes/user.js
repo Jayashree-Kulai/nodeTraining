@@ -52,7 +52,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
         }
     }
         */
-
+    //api to add endEusers using excel file
     userRouter.post("/uploadFile", userCtrl.uploadFile);
 
     userRouter.get("/downloadFile", userCtrl.downloadFile);
@@ -495,5 +495,60 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
     *     HTTP/1.1 401 Unauthorized
     *     Unauthorized
 */
+
+ //api for getting details of pending agreements
+ userRouter.get("/getPendingAgreements", authenticate, userCtrl.getPendingAgreements);
+ /**
+ * @api {get} /users/getPendingAgreements Get pending agreements
+ * @apiName Get pending agreements
+ * @apiGroup User
+ * @apiDescription API for getting pending agreements of specific user
+ *
+ * @apiUse Authenticate
+ * 
+ * @apiExample {curl} Example usage:
+ *     curl -i http://localhost:4200/api/v1/users/getPendingAgreements
+ * @apiSampleRequest http://localhost:4200/api/v1/users/getPendingAgreements
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *{
+ "meta": {
+     "code": 200,
+     "message": "Success",
+     "timestamp": "2020-12-14T10:27:57.077Z"
+ },
+ "pagination": {},
+ "data": [
+     {
+         "_id": "5fd353c75202d54111eaa140",
+         "agreed": false,
+         "userId": {
+             "_id": "5fd20978eff7064e5ef86f27",
+             "mailId": "jayashree.cs16@sahyadri.edu.in",
+             "name": "Jayashree",
+             "employeeCode": "MNG003"
+         },
+         "questionnaireId": "5fd20836d7c9764d8df81ad2"
+     },
+     {
+         "_id": "5fd73b547f6f879badea3927",
+         "agreed": false,
+         "userId": {
+             "_id": "5fd20978eff7064e5ef86f27",
+             "mailId": "jayashree.cs16@sahyadri.edu.in",
+             "name": "Jayashree",
+             "employeeCode": "MNG003"
+         },
+         "questionnaireId": "5fd20836d7c9764d8df81ad2"
+     }
+ ]
+}
+ *    
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 Unauthorized
+ *     Unauthorized
+ */
+
     app.use("/api/v1/users", userRouter);
 };
