@@ -71,6 +71,11 @@ module.exports = function (mongoose) {
             type: String
         },
 
+        autoReminder : {
+            type: Boolean,
+            default: false 
+        },
+
         createdAt: {
             type: Date,
             select: false
