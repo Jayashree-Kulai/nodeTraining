@@ -198,8 +198,51 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
     *     Unauthorized
 */
 
-//API for remider 
-questionnaireRouter.post("/remindQuestionnaire", questionnaireCtrl.remindQuestionnaire);
+//API for setting autoReminder as 'true'
+questionnaireRouter.put("/remindQuestionnaire", authenticate, questionnaireCtrl.remindQuestionnaire);
+    /**
+    * @api {put} /questionnaires/remindQuestionnaire Add Reminder
+    * @apiName Add Reminder
+    * @apiGroup Questionnaire
+    * @apiDescription API for setting autoReminder as 'true'.
+    * @apiUse Authenticate 
+    * 
+    * @apiParam {String} questionnaireId Questionnaire Id
+    * @apiExample {curl} Example usage:
+    *     curl -i http://localhost:4200/api/v1/questionnaires/remindQuestionnaire
+    * @apiSampleRequest http://localhost:4200/api/v1/questionnaires/remindQuestionnaire
+    * @apiSuccessExample Success-Response:
+    *     HTTP/1.1 200 OK
+    *{
+    "meta": {
+        "code": 200,
+        "message": "Success",
+        "timestamp": "2020-12-15T08:15:45.786Z"
+    },
+    "pagination": {},
+    "data": {
+        "autoReminder": true,
+        "_id": "5fd20836d7c9764d8df81ad2",
+        "adminId": "5fd1e1669b7243379e261fc3",
+        "title": "GuideLines",
+        "description": "Money Matters",
+        "buttonTitle": "Discount",
+        "buttonText": "Cut off",
+        "checkBoxText": "Please check",
+        "startDate": "2020-12-09T00:00:00.000Z",
+        "endDate": "2020-12-17T00:00:00.000Z",
+        "reminder": 2,
+        "pptFile": "/home/jayashree/server-policy-app/api/uploads/abc.ppt",
+        "excelSheet": "/home/jayashree/server-policy-app/api/uploads/END_USERS.xlsx",
+        "mailBody": "Hi Please read and accept this policy...<br> need your response as soon as possible"
+    }
+}
+    *    
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 401 Unauthorized
+    *     Unauthorized
+*/
 
     app.use("/api/v1/questionnaires", questionnaireRouter);
 };

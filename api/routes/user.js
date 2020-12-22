@@ -52,6 +52,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
         }
     }
         */
+       
     //api to add endEusers using excel file
     userRouter.post("/uploadFile", userCtrl.uploadFile);
 
@@ -85,14 +86,8 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
     },
     "pagination": {},
     "data": {
-        "isAdmin": false,
-        "isSuperAdmin": true,
-        "_id": "5fd10b90a0c55d11812a548b",
-        "name": "Yakshitha",
-        "employeeCode": "MNG01",
-        "mailId": "anugrahakulai@gmail.com",
-        "token": "15c6aaad-9614-42e3-9c0d-a8ce9ed974e4",
-        "tokenExpiry": "2020-12-09T19:47:40.478Z"
+        "token": "9cc540bb-7046-4686-be2e-d583e027281f",
+        "tokenExpiry": "2020-12-21T12:11:53.879Z"
     }
 }
     *     
@@ -130,18 +125,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
         "timestamp": "2020-12-10T07:18:22.935Z"
     },
     "pagination": {},
-    "data": {
-        "isAdmin": false,
-        "isSuperAdmin": false,
-        "_id": "5fd10ac3e307ae109300ff2a",
-        "IsAdmin": true,
-        "IsSuperAdmin": false,
-        "name": "Yakshitha",
-        "employeeCode": "MNG01",
-        "mailId": "anugrahakulai@gmail.com",
-        "token": null,
-        "tokenExpiry": null
-    }
+    "data": "LogOut Success"
 }
     *    
     *
@@ -174,14 +158,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
         "timestamp": "2020-12-10T07:30:51.939Z"
     },
     "pagination": {},
-    "data": {
-        "_id": "5fd1cdff8f2afa2f8853f98b",
-        "isAdmin": false,
-        "isSuperAdmin": false,
-        "mailId": "anugrahakulai@gmail.com",
-        "name": "Anugraha",
-        "employeeCode": "MNG001"
-    }
+    "data": "Password updation link sent to jayashreekulai@gmail.com"
 }
     *    
     *
@@ -222,16 +199,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
         "timestamp": "2020-12-10T07:45:48.118Z"
     },
     "pagination": {},
-    "data": {
-        "isAdmin": false,
-        "isSuperAdmin": false,
-        "_id": "5fd1cdff8f2afa2f8853f98b",
-        "mailId": "anugrahakulai@gmail.com",
-        "name": "Anugraha",
-        "employeeCode": "MNG001",
-        "token": "644bc2d8-8df7-4f98-9abe-417223bca558",
-        "tokenExpiry": "2020-12-10T08:44:58.422Z"
-    }
+    "data": "Password updated successfully"
 }
     *    
     *
@@ -270,18 +238,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
         "timestamp": "2020-12-10T08:53:04.161Z"
     },
     "pagination": {},
-    "data": {
-        "isAdmin": true,
-        "isSuperAdmin": false,
-        "_id": "5fd1e1f038573738947ee16c",
-        "name": "Prabhakara",
-        "employeeCode": "MNG01",
-        "mailId": "anugrahakulai@gmail.com",
-        "password": "18d744ceed51cd2ab9f2118157ae0779bd3bf1ea",
-        "createdAt": "2020-12-10T08:53:04.079Z",
-        "updatedAt": "2020-12-10T08:53:04.079Z",
-        "__v": 0
-    }
+    "data": "Admin added Successfully........!!!!!"
 }
     *    
     *
@@ -316,14 +273,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
         "timestamp": "2020-12-10T09:43:36.839Z"
     },
     "pagination": {},
-    "data": {
-        "isAdmin": true,
-        "isSuperAdmin": false,
-        "_id": "5fd1e1669b7243379e261fc4",
-        "mailId": "anugrahakulai@gmail.com",
-        "name": "Namitha",
-        "employeeCode": "MNG100"
-    }
+    "data": "Admin data updated Successfully........!!!!!"
 }
     *    
     *
@@ -355,14 +305,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
         "timestamp": "2020-12-10T09:32:33.946Z"
     },
     "pagination": {},
-    "data": {
-        "isAdmin": false,
-        "isSuperAdmin": false,
-        "_id": "5fd1e1669b7243379e261fc4",
-        "mailId": "anugrahakulai@gmail.com",
-        "name": "Anugraha",
-        "employeeCode": "MNG001"
-    }
+    "data": "Namitha is not an admin anymore !!!" 
 }
     *    
     *
@@ -396,19 +339,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
         "timestamp": "2020-12-10T08:53:04.161Z"
     },
     "pagination": {},
-    "data": {
-        "isAdmin": false,
-        "isSuperAdmin": true,
-        "_id": "5fd1e1f038573738947ee16c",
-        "name": "Prabhakara",
-        "employeeCode": "MNG01",
-        "mailId": "anugrahakulai@gmail.com",
-        "password": "18d744ceed51cd2ab9f2118157ae0779bd3bf1ea",
-        "createdAt": "2020-12-10T08:53:04.079Z",
-        "updatedAt": "2020-12-10T08:53:04.079Z",
-        "__v": 0
-    }
-}
+    "data": "SuperAdmin added Successfully........!!!!!"
     *    
     *
     * @apiErrorExample Error-Response:
@@ -441,14 +372,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
         "timestamp": "2020-12-10T09:43:36.839Z"
     },
     "pagination": {},
-    "data": {
-        "isAdmin": false,
-        "isSuperAdmin": true,
-        "_id": "5fd1e1669b7243379e261fc4",
-        "mailId": "anugrahakulai@gmail.com",
-        "name": "Namitha",
-        "employeeCode": "MNG100"
-    }
+    "data": "SuperAdmin data updated Successfully........!!!!!"
 }
     *    
     *
@@ -480,14 +404,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
         "timestamp": "2020-12-10T09:19:13.737Z"
     },
     "pagination": {},
-    "data": {
-        "isAdmin": false,
-        "isSuperAdmin": false,
-        "_id": "5fd1e1669b7243379e261fc4",
-        "mailId": "anugrahakulai@gmail.com",
-        "name": "Anugraha",
-        "employeeCode": "MNG001"
-    }
+    "data": "Anu is not a super admin anymore !!!"
 }
     *    
     *
@@ -496,7 +413,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
     *     Unauthorized
 */
 
- //api for getting details of pending agreements
+ //api for getting details of pending agreements of particular user
  userRouter.get("/getPendingAgreements", authenticate, userCtrl.getPendingAgreements);
  /**
  * @api {get} /users/getPendingAgreements Get pending agreements

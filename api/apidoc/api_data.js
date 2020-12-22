@@ -145,6 +145,80 @@ define({ "api": [
   },
   {
     "type": "put",
+    "url": "/questionnaires/remindQuestionnaire",
+    "title": "Add Reminder",
+    "name": "Add_Reminder",
+    "group": "Questionnaire",
+    "description": "<p>API for setting autoReminder as 'true'.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "questionnaireId",
+            "description": "<p>Questionnaire Id</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "curl -i http://localhost:4200/api/v1/questionnaires/remindQuestionnaire",
+        "type": "curl"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "http://localhost:4200/api/v1/questionnaires/remindQuestionnaire"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-15T08:15:45.786Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"autoReminder\": true,\n        \"_id\": \"5fd20836d7c9764d8df81ad2\",\n        \"adminId\": \"5fd1e1669b7243379e261fc3\",\n        \"title\": \"GuideLines\",\n        \"description\": \"Money Matters\",\n        \"buttonTitle\": \"Discount\",\n        \"buttonText\": \"Cut off\",\n        \"checkBoxText\": \"Please check\",\n        \"startDate\": \"2020-12-09T00:00:00.000Z\",\n        \"endDate\": \"2020-12-17T00:00:00.000Z\",\n        \"reminder\": 2,\n        \"pptFile\": \"/home/jayashree/server-policy-app/api/uploads/abc.ppt\",\n        \"excelSheet\": \"/home/jayashree/server-policy-app/api/uploads/END_USERS.xlsx\",\n        \"mailBody\": \"Hi Please read and accept this policy...<br> need your response as soon as possible\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized\nUnauthorized",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "routes/questionnaire.js",
+    "groupTitle": "Questionnaire",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token for authorization</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\": \"Bearer f2a9c331-7f96-4f85-9fcb-e4db13fee5b8\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "put",
     "url": "/questionnaireAgreementStatus/acceptPolicy",
     "title": "Update PolicyStatus",
     "name": "Update_PolicyStatus",
@@ -483,7 +557,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T08:53:04.161Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": true,\n        \"isSuperAdmin\": false,\n        \"_id\": \"5fd1e1f038573738947ee16c\",\n        \"name\": \"Prabhakara\",\n        \"employeeCode\": \"MNG01\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"password\": \"18d744ceed51cd2ab9f2118157ae0779bd3bf1ea\",\n        \"createdAt\": \"2020-12-10T08:53:04.079Z\",\n        \"updatedAt\": \"2020-12-10T08:53:04.079Z\",\n        \"__v\": 0\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T08:53:04.161Z\"\n    },\n    \"pagination\": {},\n    \"data\": \"Admin added Successfully........!!!!!\"\n}",
           "type": "json"
         }
       ]
@@ -571,7 +645,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T08:53:04.161Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": false,\n        \"isSuperAdmin\": true,\n        \"_id\": \"5fd1e1f038573738947ee16c\",\n        \"name\": \"Prabhakara\",\n        \"employeeCode\": \"MNG01\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"password\": \"18d744ceed51cd2ab9f2118157ae0779bd3bf1ea\",\n        \"createdAt\": \"2020-12-10T08:53:04.079Z\",\n        \"updatedAt\": \"2020-12-10T08:53:04.079Z\",\n        \"__v\": 0\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T08:53:04.161Z\"\n    },\n    \"pagination\": {},\n    \"data\": \"SuperAdmin added Successfully........!!!!!\"",
           "type": "json"
         }
       ]
@@ -664,7 +738,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T07:45:48.118Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": false,\n        \"isSuperAdmin\": false,\n        \"_id\": \"5fd1cdff8f2afa2f8853f98b\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"name\": \"Anugraha\",\n        \"employeeCode\": \"MNG001\",\n        \"token\": \"644bc2d8-8df7-4f98-9abe-417223bca558\",\n        \"tokenExpiry\": \"2020-12-10T08:44:58.422Z\"\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T07:45:48.118Z\"\n    },\n    \"pagination\": {},\n    \"data\": \"Password updated successfully\"\n}",
           "type": "json"
         }
       ]
@@ -718,7 +792,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T09:32:33.946Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": false,\n        \"isSuperAdmin\": false,\n        \"_id\": \"5fd1e1669b7243379e261fc4\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"name\": \"Anugraha\",\n        \"employeeCode\": \"MNG001\"\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T09:32:33.946Z\"\n    },\n    \"pagination\": {},\n    \"data\": \"Namitha is not an admin anymore !!!\" \n}",
           "type": "json"
         }
       ]
@@ -792,7 +866,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T09:19:13.737Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": false,\n        \"isSuperAdmin\": false,\n        \"_id\": \"5fd1e1669b7243379e261fc4\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"name\": \"Anugraha\",\n        \"employeeCode\": \"MNG001\"\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T09:19:13.737Z\"\n    },\n    \"pagination\": {},\n    \"data\": \"Anu is not a super admin anymore !!!\"\n}",
           "type": "json"
         }
       ]
@@ -853,7 +927,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-14T10:27:57.077Z\"\n    },\n    \"pagination\": {},\n    \"data\": [\n        {\n            \"_id\": \"5fd353c75202d54111eaa140\",\n            \"agreed\": false,\n            \"userId\": {\n                \"_id\": \"5fd20978eff7064e5ef86f27\",\n                \"mailId\": \"jayashree.cs16@sahyadri.edu.in\",\n                \"name\": \"Jayashree\",\n                \"employeeCode\": \"MNG003\"\n            },\n            \"questionnaireId\": \"5fd20836d7c9764d8df81ad2\"\n        },\n        {\n            \"_id\": \"5fd73b547f6f879badea3927\",\n            \"agreed\": false,\n            \"userId\": {\n                \"_id\": \"5fd20978eff7064e5ef86f27\",\n                \"mailId\": \"jayashree.cs16@sahyadri.edu.in\",\n                \"name\": \"Jayashree\",\n                \"employeeCode\": \"MNG003\"\n            },\n            \"questionnaireId\": \"5fd20836d7c9764d8df81ad2\"\n        }\n    ]\n   }",
+          "content": "    HTTP/1.1 200 OK\n{\n \"meta\": {\n     \"code\": 200,\n     \"message\": \"Success\",\n     \"timestamp\": \"2020-12-14T10:27:57.077Z\"\n },\n \"pagination\": {},\n \"data\": [\n     {\n         \"_id\": \"5fd353c75202d54111eaa140\",\n         \"agreed\": false,\n         \"userId\": {\n             \"_id\": \"5fd20978eff7064e5ef86f27\",\n             \"mailId\": \"jayashree.cs16@sahyadri.edu.in\",\n             \"name\": \"Jayashree\",\n             \"employeeCode\": \"MNG003\"\n         },\n         \"questionnaireId\": \"5fd20836d7c9764d8df81ad2\"\n     },\n     {\n         \"_id\": \"5fd73b547f6f879badea3927\",\n         \"agreed\": false,\n         \"userId\": {\n             \"_id\": \"5fd20978eff7064e5ef86f27\",\n             \"mailId\": \"jayashree.cs16@sahyadri.edu.in\",\n             \"name\": \"Jayashree\",\n             \"employeeCode\": \"MNG003\"\n         },\n         \"questionnaireId\": \"5fd20836d7c9764d8df81ad2\"\n     }\n ]\n}",
           "type": "json"
         }
       ]
@@ -941,7 +1015,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n      {\n         \"meta\": {\n         \"code\": 200,\n         \"message\": \"Success\",\n         \"timestamp\": \"2020-12-09T18:47:40.498Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": false,\n        \"isSuperAdmin\": true,\n        \"_id\": \"5fd10b90a0c55d11812a548b\",\n        \"name\": \"Yakshitha\",\n        \"employeeCode\": \"MNG01\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"token\": \"15c6aaad-9614-42e3-9c0d-a8ce9ed974e4\",\n        \"tokenExpiry\": \"2020-12-09T19:47:40.478Z\"\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n      {\n         \"meta\": {\n         \"code\": 200,\n         \"message\": \"Success\",\n         \"timestamp\": \"2020-12-09T18:47:40.498Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"token\": \"9cc540bb-7046-4686-be2e-d583e027281f\",\n        \"tokenExpiry\": \"2020-12-21T12:11:53.879Z\"\n    }\n}",
           "type": "json"
         }
       ]
@@ -982,7 +1056,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T07:18:22.935Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": false,\n        \"isSuperAdmin\": false,\n        \"_id\": \"5fd10ac3e307ae109300ff2a\",\n        \"IsAdmin\": true,\n        \"IsSuperAdmin\": false,\n        \"name\": \"Yakshitha\",\n        \"employeeCode\": \"MNG01\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"token\": null,\n        \"tokenExpiry\": null\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T07:18:22.935Z\"\n    },\n    \"pagination\": {},\n    \"data\": \"LogOut Success\"\n}",
           "type": "json"
         }
       ]
@@ -1070,7 +1144,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T09:43:36.839Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": true,\n        \"isSuperAdmin\": false,\n        \"_id\": \"5fd1e1669b7243379e261fc4\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"name\": \"Namitha\",\n        \"employeeCode\": \"MNG100\"\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T09:43:36.839Z\"\n    },\n    \"pagination\": {},\n    \"data\": \"Admin data updated Successfully........!!!!!\"\n}",
           "type": "json"
         }
       ]
@@ -1151,7 +1225,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T07:30:51.939Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"_id\": \"5fd1cdff8f2afa2f8853f98b\",\n        \"isAdmin\": false,\n        \"isSuperAdmin\": false,\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"name\": \"Anugraha\",\n        \"employeeCode\": \"MNG001\"\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T07:30:51.939Z\"\n    },\n    \"pagination\": {},\n    \"data\": \"Password updation link sent to jayashreekulai@gmail.com\"\n}",
           "type": "json"
         }
       ]
@@ -1219,7 +1293,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T09:43:36.839Z\"\n    },\n    \"pagination\": {},\n    \"data\": {\n        \"isAdmin\": false,\n        \"isSuperAdmin\": true,\n        \"_id\": \"5fd1e1669b7243379e261fc4\",\n        \"mailId\": \"anugrahakulai@gmail.com\",\n        \"name\": \"Namitha\",\n        \"employeeCode\": \"MNG100\"\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"meta\": {\n        \"code\": 200,\n        \"message\": \"Success\",\n        \"timestamp\": \"2020-12-10T09:43:36.839Z\"\n    },\n    \"pagination\": {},\n    \"data\": \"SuperAdmin data updated Successfully........!!!!!\"\n}",
           "type": "json"
         }
       ]

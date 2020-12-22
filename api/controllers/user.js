@@ -22,9 +22,6 @@ module.exports = function (mongoose, utils, config, constants, logger) {
 
     userCtrl.createUser = async function (req, res, pathName) {
         try {
-
-            // var datafile = path.join(__dirname, "..", "uploads/") + 'END-USER.xlsx';
-            // var dataExcel = await utils.readexcelsheet(datafile)
             var dataExcel = await utils.readexcelsheet(pathName);
             console.log("dataExcel...........", dataExcel)
 
@@ -41,7 +38,6 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 if (data) {
                     console.log("This user already exists in user collection,---", data);
                 }
-
 
                 else {
                     utils.sendMail(userObj.name, userObj.mailId, userObj.password);
@@ -86,11 +82,10 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 if (!data) {
                     return utils.sendCustomError(req, res, "HTTP_ERR", "DB_ERR");
                 }
-                console.log("new admin details--->", data);
-                utils.sendMailForAdmin(userObj.name, userObj.mailId, defaultPassword);
-                console.log("Default password.....", defaultPassword)
 
-                return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                utils.sendMailForAdmin(userObj.name, userObj.mailId, defaultPassword);               
+                var displayData = "Admin added Successfully........!!!!!";
+                return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
             }
 
 
@@ -126,7 +121,8 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     }
 
                     data = await Users.updateDataById(data._id, userObj);
-                    return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                    var displayData = "Admin data updated Successfully........!!!!!";
+                    return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
                 }
             }
         } catch (error) {
@@ -147,12 +143,13 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 var query = {};
                 query.mailId = req.body.mailId;
                 let data = await Users.getData(query);
-                if (!data) {
+                if (!data || data.isAdmin === false) {
                     return utils.sendCustomError(req, res, "HTTP_ERR", "DATA_NOT_EXISTS")
                 } else {
                     data.isAdmin = false;
                     data = await Users.updateDataById(data._id, { isAdmin: data.isAdmin });
-                    return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                    var displayData = data.name + " is not an admin anymore !!!";
+                    return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
                 }
             }
         } catch (error) {
@@ -183,11 +180,10 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 if (!data) {
                     return utils.sendCustomError(req, res, "HTTP_ERR", "DB_ERR");
                 }
-                console.log("New superAdmin details--->", data);
-                utils.sendMailForSuperAdmin(userObj.name, userObj.mailId, defaultPassword);
-                console.log("Default password.....", defaultPassword)
 
-                return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                utils.sendMailForSuperAdmin(userObj.name, userObj.mailId, defaultPassword);
+                var displayData = "SuperAdmin added Successfully........!!!!!";
+                return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
             }
         } catch (error) {
             return utils.sendDBCallbackErrs(req, res, error, null);
@@ -221,7 +217,8 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     }
 
                     data = await Users.updateDataById(data._id, userObj);
-                    return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                    var displayData = "SuperAdmin data updated Successfully........!!!!!";
+                    return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
                 }
             }
         } catch (error) {
@@ -247,7 +244,8 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 } else {
                     data.isSuperAdmin = false;
                     data = await Users.updateDataById(data._id, { isSuperAdmin: data.isSuperAdmin });
-                    return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                    var displayData = data.name + " is not a super admin anymore !!!";
+                    return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
                 }
             }
         } catch (error) {
@@ -359,7 +357,10 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 data.token = await utils.generateBearerToken();
                 data.tokenExpiry = await utils.generateExpiryTime();
                 data = await Users.updateDataById(data._id, { token: data.token, tokenExpiry: data.tokenExpiry });
-                return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                var displayData = {};
+                displayData.token = data.token;
+                displayData.tokenExpiry = data.tokenExpiry;
+                return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
             }
 
         } catch (error) {
@@ -379,7 +380,8 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     data.token = null;
                     data.tokenExpiry = null
                     data = await Users.updateDataById(data._id, { token: data.token, tokenExpiry: data.tokenExpiry });
-                    return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                    var displayData = "LogOut Success";
+                    return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
                 }
             }
 
@@ -401,7 +403,8 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             } else {
                 var passwordUpdateLink = "https://projects.invisionapp.com/share/UVYGK8TWQJZ#/screens/432694629";
                 await utils.sendPasswordUpdationLinkMail(user.name, user.mailId, passwordUpdateLink);
-                return utils.sendResponse(req, res, user, "SUCCESS", "SUCCESS");
+                var displayData = "Password updation link sent to "+  user.mailId;
+                return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
             }
 
         } catch (error) {
@@ -428,7 +431,11 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                         return utils.sendCustomError(req, res, "HTTP_ERR", "PARAM_MISSING")
                     }
                     data = await Users.updateDataById(data._id, userObj);
-                    return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+                    if (data) {
+                        var displayData = "Password updated successfully"
+                        return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
+                    }
+                   
                 }
             }
         } catch (error) {
@@ -441,8 +448,6 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             var query = {};
             query.name = req.user.name;
             let data = await Users.getData(query);
-            console.log("Data---> for  accept pending ---> ", data);
-
             var queryObj = {};
             queryObj.query = {};
             queryObj.query.userId = data._id;
