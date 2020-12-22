@@ -83,7 +83,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     return utils.sendCustomError(req, res, "HTTP_ERR", "DB_ERR");
                 }
 
-                utils.sendMailForAdmin(userObj.name, userObj.mailId, defaultPassword);               
+                utils.sendMailForAdmin(userObj.name, userObj.mailId, defaultPassword);
                 var displayData = "Admin added Successfully........!!!!!";
                 return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
             }
@@ -403,7 +403,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             } else {
                 var passwordUpdateLink = "https://projects.invisionapp.com/share/UVYGK8TWQJZ#/screens/432694629";
                 await utils.sendPasswordUpdationLinkMail(user.name, user.mailId, passwordUpdateLink);
-                var displayData = "Password updation link sent to "+  user.mailId;
+                var displayData = "Password updation link sent to " + user.mailId;
                 return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
             }
 
@@ -435,7 +435,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                         var displayData = "Password updated successfully"
                         return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
                     }
-                   
+
                 }
             }
         } catch (error) {

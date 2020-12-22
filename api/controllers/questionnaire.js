@@ -52,8 +52,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                     if (req.body.startDate) {
                         var startDate = new Date(req.body.startDate)
                         var currentDate = new Date();
-                        console.log("req.startDate   ", startDate)
-                        console.log("Current date     ", currentDate);
+
                         if (startDate < currentDate) {
                             return utils.sendCustomError(req, res, "INVALID", "BAD_PARAMS");
                         }
@@ -62,7 +61,6 @@ module.exports = function (mongoose, utils, config, constants, logger) {
 
                     if (req.body.endDate) {
                         if (req.body.endDate <= req.body.startDate) {
-                            console.log("req.endDate error  ", req.body.endDate)
                             return utils.sendCustomError(req, res, "INVALID", "BAD_PARAMS");
                         }
                         questionnaireObj.endDate = req.body.endDate;
@@ -74,7 +72,7 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                         }
 
                         var diffDays = Math.ceil((new Date(req.body.endDate) - new Date(req.body.startDate)) / (1000 * 60 * 60 * 24));
-                        console.log("Different btw start and end date......", diffDays)
+
                         if (req.body.reminder <= diffDays) {
                             questionnaireObj.reminder = req.body.reminder;
                         } else {
@@ -95,20 +93,13 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                         questionnaireObj.mailBody = req.body.mailBody;
                     }
 
-                    var query = {};
-                    query.title = req.body.title;
-                    let questionnaireData = await Questionnaires.getData(query);
+                    let data = await Questionnaires.addData(questionnaireObj);
+                    if (data) {
+                        var displaydata = " New questionnaire created with the id : " + data._id;
+                        return utils.sendResponse(req, res, displaydata, "SUCCESS", "SUCCESS");
+                    }
 
 
-                    if (questionnaireData) {
-                        console.log("Questionnaire data already exist with same title.........", questionnaireData)
-                        return utils.sendCustomError(req, res, "CONFLICT", "DATA_EXISTS")
-                    }
-                    else {
-                        let data = await Questionnaires.addData(questionnaireObj);
-                        console.log("________________data", data);
-                        return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
-                    }
                 }
             }
             else {
@@ -203,7 +194,11 @@ module.exports = function (mongoose, utils, config, constants, logger) {
                 var questionnaireObj = {};
                 questionnaireObj.autoReminder = true;
                 let data = await Questionnaires.updateDataById(req.body.questionnaireId, questionnaireObj);
-                return utils.sendResponse(req, res, data, "SUCCESS", "SUCCESS");
+
+                if (data) {
+                    var displayData = "Auto reminder added successfuly";
+                    return utils.sendResponse(req, res, displayData, "SUCCESS", "SUCCESS");
+                }
             }
         } catch (error) {
             console.log("____________Err", error)
@@ -258,11 +253,14 @@ module.exports = function (mongoose, utils, config, constants, logger) {
     questionnaireCtrl.generateReportQuestionnaire = async function (req, res) {
         if (req.user && req.user.isAdmin) {
             console.log("Downloading QuestionnaireAgreementStatus collection");
+
+            var questionnaireObj = {};
+            if (req.body.questionnaireId) {
+                questionnaireObj.questionnaireId = req.body.questionnaireId;
+            }
             var queryObj = {};
             queryObj.query = {};
-
             queryObj.options = {};
-
             queryObj.populate = ([{ path: 'userId', select: 'name mailId employeeCode' }])
 
             queryObj.selectFields = 'questionnaireId agreed';
@@ -271,17 +269,24 @@ module.exports = function (mongoose, utils, config, constants, logger) {
             var xlsData = [];
             if (data.length > 0) {
                 data.forEach(element => {
-                    console.log("Current Element------>", element);
-                    console.log("Current Element of Questionnaire_Id------>", element.questionnaireId);
-                    xlsData.push({ "Name": element.userId.name, "E-mail": element.userId.mailId, 
-                    "Employee_code": element.userId.employeeCode, "Policy_Id": element.questionnaireId, 
-                    "Policy_Status": element.agreed });
+                   if (element.questionnaireId == questionnaireObj.questionnaireId) {
+                        console.log("Current Element------>", element);
+                        xlsData.push({
+                            "Name": element.userId.name, "E-mail": element.userId.mailId,
+                            "Employee_code": element.userId.employeeCode, "Policy_Id": element.questionnaireId,
+                            "Policy_Status": element.agreed
+                        });
+                    }
+
                 });
             }
             try {
                 var xls = json2xls(xlsData);
-                fs.writeFile(path.join(__dirname + '/../downloads') + '/report.xlsx', xls, 'binary', function (err) {
-                    res.download(path.join(__dirname + '/../downloads') + '/report.xlsx', function (err) {
+                var time = new Date().toISOString().replace(/T/,' ').replace(/\..+/, '');
+                var filename= questionnaireObj.questionnaireId + "-" + time;
+                console.log("filename==",filename)
+                fs.writeFile(path.join(__dirname + '/../downloads') + '/' + filename + '.xlsx', xls, 'binary', function (err) {
+                    res.download(path.join(__dirname + '/../downloads') + '/' + filename  + '.xlsx', function (err) {
                         if (err) {
                             console.log("Error");
                             console.log(err);

@@ -64,24 +64,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
         "timestamp": "2020-12-10T10:07:23.833Z"
     },
     "pagination": {},
-    "data": {
-        "_id": "5fd1f35be392204295efaeaf",
-        "adminId": "5fd1e1669b7243379e261fc3",
-        "title": "Leave policy",
-        "description": "Leave policy details",
-        "buttonTitle": "Accept",
-        "buttonText": "I Agree",
-        "checkBoxText": "I Agree",
-        "startDate": "2020-12-09T00:00:00.000Z",
-        "endDate": "2020-12-10T00:00:00.000Z",
-        "reminder": 2,
-        "pptFile": "/home/jayashree/server-policy-app/api/uploads/abc.ppt",
-        "excelSheet": "endUser.xlsx",
-        "mailBody": "Hi Please read and accept this policy",
-        "createdAt": "2020-12-10T10:07:23.825Z",
-        "updatedAt": "2020-12-10T10:07:23.825Z",
-        "__v": 0
-    }
+    "data": " New questionnaire created with the id : 5fe17a3cf02be217c9dad239"
 }
     *    
     *
@@ -175,7 +158,7 @@ module.exports = function (app, mongoose, utils, config, constants, logger, uplo
 */
 
     //api to generate Report of questionnaire data
-    questionnaireRouter.get("/generateReportQuestionnaire",authenticate, questionnaireCtrl.generateReportQuestionnaire);
+    questionnaireRouter.post("/generateReportQuestionnaire",authenticate, questionnaireCtrl.generateReportQuestionnaire);
          /**
     * @api {get} /questionnaires/generateReportQuestionnaire Generate Report
     * @apiName Generate Report
@@ -220,22 +203,7 @@ questionnaireRouter.put("/remindQuestionnaire", authenticate, questionnaireCtrl.
         "timestamp": "2020-12-15T08:15:45.786Z"
     },
     "pagination": {},
-    "data": {
-        "autoReminder": true,
-        "_id": "5fd20836d7c9764d8df81ad2",
-        "adminId": "5fd1e1669b7243379e261fc3",
-        "title": "GuideLines",
-        "description": "Money Matters",
-        "buttonTitle": "Discount",
-        "buttonText": "Cut off",
-        "checkBoxText": "Please check",
-        "startDate": "2020-12-09T00:00:00.000Z",
-        "endDate": "2020-12-17T00:00:00.000Z",
-        "reminder": 2,
-        "pptFile": "/home/jayashree/server-policy-app/api/uploads/abc.ppt",
-        "excelSheet": "/home/jayashree/server-policy-app/api/uploads/END_USERS.xlsx",
-        "mailBody": "Hi Please read and accept this policy...<br> need your response as soon as possible"
-    }
+    "data": "Auto reminder added successfuly"
 }
     *    
     *
